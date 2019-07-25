@@ -8,8 +8,8 @@ The aim of this project is to hide data/messages in audio files.
 
 ### Algorithms
  
- Least-Significant Bit encoding will be used in one form or other.
-  If there is time, I would like to try to implement an Echo Hiding algorithm for watermarking audio files.
+ __Least-Significant Bit__ encoding will be used in one form or other.
+  If there is time, I would like to try to implement an __Echo Hiding__ algorithm for watermarking audio files.
 
 ### Target Data
 
@@ -17,7 +17,7 @@ This project will target Microsoft WAV files, as they are a simple starting poin
 
 ## Documentation
 
-[Design documentation](/documentation/design.md)
+[Design document](/documentation/design.md)
 
 
 ## Weekly reports
