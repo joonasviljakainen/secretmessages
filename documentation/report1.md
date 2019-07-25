@@ -1,6 +1,6 @@
 # Weekly report #1
 
-[Hour reporting](/hours.md)
+[Hour reporting](/documentation/hours.md)
 
 ## What did I do this week?
 
