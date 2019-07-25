@@ -20,6 +20,8 @@ As output, the program will create a WAV file that any user can play back, provi
 
 The program will have the capacity to decode messages as well.
 
+As for disk I/O, I will implement the required functions in their own package as simply as I can.
+
 ## Sources
 
 - [Intro to Audio Programming, Part 2: Demystifying the WAV Format](https://blogs.msdn.microsoft.com/dawate/2009/06/23/intro-to-audio-programming-part-2-demystifying-the-wav-format/)

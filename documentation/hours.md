@@ -8,7 +8,7 @@
 | Date | Time spent | Description |
 |-|-|-|
 | 23.7.2019 | 2h | Wondering about topics, basic research on WAV files, established a repository & hello world |
-| 25.7.2019 | ||
+| 25.7.2019 | 2h | Documentation, repo setup, searching for sources. Dummy program structure. |
 
 ## Week 2
 
