@@ -10,6 +10,10 @@ __Least-Significant Bit encoding__ will be used for hiding the messages. If I ha
 
 - Question to the director: would it be wiser to implement e.g. a pen-and-paper encryption algorithm to go with the hidden message, as opposed to implementing an alternative hiding algorithm? Echo hiding will require writing a lot of mathematically intense functions.
 
+### Time complexities
+
+At the moment the time complexity of all operations appears to be O(n). In addition, implementing echo hiding would require working on somewhat complicated mathematical functions.
+
 ## Input/Output
 
 The program will consume and modify Microsoft WAV files as they are a relatively easy starting point for processing audio. 
@@ -21,6 +25,10 @@ As output, the program will create a WAV file that any user can play back, provi
 The program will have the capacity to decode messages as well.
 
 As for disk I/O, I will implement the required functions in their own package as simply as I can.
+
+Essentially:
+- WAV audio and input data (string) -> steganographically altered WAV file
+- Stego WAV audio --> to reveal the hidden data.
 
 ## Sources
 
