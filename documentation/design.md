@@ -10,9 +10,11 @@ __Least-Significant Bit encoding__ will be used for hiding the messages. If I ha
 
 - Question to the director: would it be wiser to implement e.g. a pen-and-paper encryption algorithm to go with the hidden message, as opposed to implementing an alternative hiding algorithm? Echo hiding will require writing a lot of mathematically intense functions.
 
-### Time complexities
+### Time & space complexities
 
 At the moment the time complexity of all operations appears to be O(n). In addition, implementing echo hiding would require working on somewhat complicated mathematical functions.
+
+Space requirements as I see them at the moment are also O(n) (possibly O(2n), to be more specific).
 
 ## Input/Output
 
@@ -29,6 +31,8 @@ As for disk I/O, I will implement the required functions in their own package as
 Essentially:
 - WAV audio and input data (string) -> steganographically altered WAV file
 - Stego WAV audio --> to reveal the hidden data.
+
+
 
 ## Sources
 

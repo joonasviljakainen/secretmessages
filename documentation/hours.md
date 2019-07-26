@@ -9,6 +9,7 @@
 |-|-|-|
 | 23.7.2019 | 2h | Wondering about topics, basic research on WAV files, established a repository & hello world |
 | 25.7.2019 | 2h | Documentation, repo setup, searching for sources. Dummy program structure. |
+| 26.7.2019| 1h | Additional thinking & preparing I/O functions for processing WAV. |
 
 ## Week 2
 

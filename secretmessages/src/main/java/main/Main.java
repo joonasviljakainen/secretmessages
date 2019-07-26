@@ -1,22 +1,25 @@
 package main;
 
 import java.util.Scanner;
+import IO.WavReader;
 import Math.Mathematics;
+import java.io.IOException;
 
 public class Main {
+
     public static void main(String[] args) {
         System.out.println("Hello world!");
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Give us a small-ish number.");
+        
+        System.out.println("Printing the first four bytes:");
         try {
-            int i = scanner.nextInt();
-            System.out.println("Great job!");
-            System.out.println("Here's the absolute value: " + Mathematics.abs(i));
-            System.out.println("Bye now.");
-        } catch (Exception e) {
-            System.out.println("How hard can a number be?");
+            //byte[] bytes = WavReader.readWavFile("/home/joonas/workspaces/secretmessages/secretmessages/samples/a2002011001-e02.wav");
+            byte[] bytes = WavReader.readWavFile("../samples/a2002011001-e02.wav");
+            for (int i = 0; i < 4; i++) {
+                System.out.println((char) (bytes[i]));
+            }
+        } catch (IOException e) {
+            System.out.println(e);
         }
-
         return;
     }
 }

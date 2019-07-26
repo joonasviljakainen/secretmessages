@@ -1,0 +1,12 @@
+secretmessages/target/
+secretmessages/pom.xml.tag
+secretmessages/pom.xml.releaseBackup
+secretmessages/pom.xml.versionsBackup
+secretmessages/pom.xml.next
+secretmessages/release.properties
+secretmessages/dependency-reduced-pom.xml
+secretmessages/buildNumber.properties
+secretmessages/.mvn/timing.properties
+secretmessages/.idea/
+
+# Avoid ignoring Maven wrapper jar file (.jar files are usuall!/.mvn/wrapper/maven-wrapper.jar
