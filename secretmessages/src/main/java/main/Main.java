@@ -12,7 +12,6 @@ public class Main {
         
         System.out.println("Printing the first four bytes:");
         try {
-            //byte[] bytes = WavReader.readWavFile("/home/joonas/workspaces/secretmessages/secretmessages/samples/a2002011001-e02.wav");
             byte[] bytes = WavReader.readWavFile("../samples/a2002011001-e02.wav");
             for (int i = 0; i < 4; i++) {
                 System.out.println((char) (bytes[i]));
