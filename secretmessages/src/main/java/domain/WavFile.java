@@ -27,6 +27,7 @@ public class WavFile {
     private final int BLOCK_ALIGN_START_INDEX = 32;
     private final int BPS_START_INDEX = 34;
     private int DATA_CHUNK_START_INDEX;
+    private int DATA_SIZE_START_INDEX;
     private int DATA_START_INDEX;
 
     private byte[] riffChunk;
@@ -44,6 +45,7 @@ public class WavFile {
     private int bitsPerSample; // 2 bytes
 
     private byte[] dataHeader;
+    private int dataSize;
 
     private byte[] data;
 
@@ -65,7 +67,11 @@ public class WavFile {
 
             this.DATA_CHUNK_START_INDEX = this.fmtSubChunkSize + this.FMT_SIZE_START_INDEX + 4;
             this.fmtChunk = ArrayUtils.slice(bytes, FMT_START_INDEX, DATA_CHUNK_START_INDEX);
-            this.DATA_START_INDEX = this.DATA_CHUNK_START_INDEX + 4;
+            this.DATA_SIZE_START_INDEX = this.DATA_CHUNK_START_INDEX + 4;
+            this.DATA_START_INDEX = this.DATA_SIZE_START_INDEX + 4;
+
+            this.dataSize = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, this.DATA_SIZE_START_INDEX, this.DATA_SIZE_START_INDEX + 4));
+
             System.out.println("Data chunk start index: " + (DATA_CHUNK_START_INDEX));
 
             System.out.println("SIZE - whole file: " + bytes.length);
@@ -79,9 +85,11 @@ public class WavFile {
             System.out.println("Bits per sample: " + this.bitsPerSample);
 
             System.out.println("Data starting bytes: ");
-            for (int i = this.DATA_CHUNK_START_INDEX; i < this.DATA_START_INDEX; i++) {
+            for (int i = this.DATA_CHUNK_START_INDEX; i < this.DATA_SIZE_START_INDEX; i++) {
                 System.out.print((char) (bytes[i]));
             }
+            System.out.println("");
+            System.out.println("Data size: " + this.dataSize);
             System.out.println("");
 
         } catch (IOException e) {
@@ -110,12 +118,45 @@ public class WavFile {
         return this.data.length + this.dataHeader.length;
     }
 
-    public int getDataSize() {
+    /*
+    public int getFileSize() {
         return this.data.length;
     }
-
+     */
     public int getSizeInheader() {
         return this.sizeInHeader;
+    }
+
+    public int getAudioFormat() {
+        return this.audioFormat;
+    }
+
+    public int getNumberOfChannels() {
+        return this.numChannels;
+    }
+
+    public int getSampleRate() {
+        return this.sampleRate;
+    }
+
+    public int getByteRate() {
+        return this.byteRate;
+    }
+
+    public int getBlockAlign() {
+        return this.blockAlign;
+    }
+
+    public int getBitsPerSample() {
+        return this.getBitsPerSample();
+    }
+
+    public int getAudioStartingIndex() {
+        return this.DATA_START_INDEX;
+    }
+
+    public int getDataSize() {
+        return this.dataSize;
     }
 
     /**
