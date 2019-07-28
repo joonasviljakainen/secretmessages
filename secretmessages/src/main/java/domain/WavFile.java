@@ -84,9 +84,6 @@ public class WavFile {
             }
             System.out.println("");
 
-            /*for (int i = 0; i < 44; i++) {
-                System.out.println("" + i + ":" + (char) (bytes[i]));
-            }*/
         } catch (IOException e) {
             System.out.println(e);
             System.exit(0);

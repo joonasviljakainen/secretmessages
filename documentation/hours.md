@@ -13,6 +13,11 @@
 
 ## Week 2
 
+| Date | Time spent | Description |
+|-|-|-|
+| 27.7.2019 | 2h | Gloom & Doom, Reading up on WAV, writing back to file, and some WAVE header parsing |
+| 28.7.2019 | 4h | More reading up on WAV, parsing WAVE headers, added sample files with different sampling rates. Now I can see what the file is like. |
+
 ## Week 3
 
 ## Week 4
