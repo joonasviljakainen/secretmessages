@@ -30,10 +30,12 @@ public class WavFile {
     private int DATA_SIZE_START_INDEX;
     private int DATA_START_INDEX;
 
+    // RIFF CHUNK
     private byte[] riffChunk;
     private int sizeInHeader;
     private char[] format; // Should be WAVE
 
+    // FMT SUBCHUNK
     private byte[] fmtChunk;
     private char[] fmtSubChunkId;
     private int fmtSubChunkSize;
@@ -44,18 +46,21 @@ public class WavFile {
     private int blockAlign; // 2 bytes
     private int bitsPerSample; // 2 bytes
 
+    // DATA SUBCHUNK
     private byte[] dataHeader;
     private int dataSize;
-
     private byte[] data;
 
     public WavFile(String location) {
         try {
             byte[] bytes = IOManager.readFileToBytes(location);
+
+            // RIFF CHUNK
             this.riffChunk = ArrayUtils.slice(bytes, 0, 12);
             this.sizeInHeader = this.littleEndianBytesToInteger(ArrayUtils.slice(this.riffChunk, RIFF_CHUNK_SIZE, RIFF_CHUNK_SIZE + 4));
             this.format = this.bigEndianBytesToChars(ArrayUtils.slice(this.riffChunk, FORMAT_INDEX, FORMAT_INDEX + 4));
 
+            // FMT SUBCHUNK
             this.fmtSubChunkId = this.bigEndianBytesToChars(ArrayUtils.slice(bytes, FMT_START_INDEX, FMT_START_INDEX + 4));
             this.fmtSubChunkSize = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, FMT_SIZE_START_INDEX, FMT_SIZE_START_INDEX + 4));
             this.audioFormat = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, AUDIO_FORMAT_INDEX, AUDIO_FORMAT_INDEX + 2));
@@ -65,14 +70,19 @@ public class WavFile {
             this.blockAlign = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, BLOCK_ALIGN_START_INDEX, BLOCK_ALIGN_START_INDEX + 2));
             this.bitsPerSample = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, BPS_START_INDEX, BPS_START_INDEX + 2));
 
+            // CALCULATING INDEXES
             this.DATA_CHUNK_START_INDEX = this.fmtSubChunkSize + this.FMT_SIZE_START_INDEX + 4;
-            this.fmtChunk = ArrayUtils.slice(bytes, FMT_START_INDEX, DATA_CHUNK_START_INDEX);
             this.DATA_SIZE_START_INDEX = this.DATA_CHUNK_START_INDEX + 4;
             this.DATA_START_INDEX = this.DATA_SIZE_START_INDEX + 4;
-
-            this.dataSize = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, this.DATA_SIZE_START_INDEX, this.DATA_SIZE_START_INDEX + 4));
-
             System.out.println("Data chunk start index: " + (DATA_CHUNK_START_INDEX));
+            
+            // FMT chunk here, because its length was not known for sure previously
+            this.fmtChunk = ArrayUtils.slice(bytes, FMT_START_INDEX, DATA_CHUNK_START_INDEX);
+
+            // DATA SUBCHUNK
+            this.dataHeader = ArrayUtils.slice(bytes, this.DATA_CHUNK_START_INDEX, this.DATA_START_INDEX);
+            this.dataSize = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, this.DATA_SIZE_START_INDEX, this.DATA_SIZE_START_INDEX + 4));
+            this.data = ArrayUtils.slice(bytes, this.DATA_START_INDEX, bytes.length);
 
             System.out.println("SIZE - whole file: " + bytes.length);
             System.out.println("SIZE - in header: " + this.sizeInHeader);
@@ -83,18 +93,18 @@ public class WavFile {
             System.out.println("Byte rate: " + this.byteRate + ", " + (this.sampleRate * this.numChannels * this.bitsPerSample / 8));
             System.out.println("Block Align: " + this.blockAlign + ", " + (this.numChannels * this.bitsPerSample / 8));
             System.out.println("Bits per sample: " + this.bitsPerSample);
-
             System.out.println("Data starting bytes: ");
             for (int i = this.DATA_CHUNK_START_INDEX; i < this.DATA_SIZE_START_INDEX; i++) {
                 System.out.print((char) (bytes[i]));
             }
             System.out.println("");
             System.out.println("Data size: " + this.dataSize);
+            System.out.println("Length of this.data: " + this.data.length);
             System.out.println("");
 
         } catch (IOException e) {
             System.out.println(e);
-            System.exit(0);
+            System.out.println("ERROR ERRO R ");
         }
 
     }
@@ -107,9 +117,6 @@ public class WavFile {
         this.data = data;
     }
 
-    /*public byte[] getFormatChunk() {
-        return this.fmt;
-    }*/
     public byte[] getHeaderChunk() {
         return this.riffChunk;
     }
@@ -118,11 +125,6 @@ public class WavFile {
         return this.data.length + this.dataHeader.length;
     }
 
-    /*
-    public int getFileSize() {
-        return this.data.length;
-    }
-     */
     public int getSizeInheader() {
         return this.sizeInHeader;
     }
@@ -157,6 +159,21 @@ public class WavFile {
 
     public int getDataSize() {
         return this.dataSize;
+    }
+
+    public byte[] getAudioData() {
+        return this.data;
+    }
+
+    public byte[] toSaveableByteArray() {
+        System.out.println("rifff: " + this.riffChunk.length);
+        System.out.println("fmt: " + this.fmtChunk.length);
+        System.out.println("dataheader : " + this.dataHeader.length);
+        System.out.println("data: " + this.data.length);
+        byte[] ret = ArrayUtils.append(this.riffChunk, this.fmtChunk);
+        ret = ArrayUtils.append(ret, this.dataHeader);
+        ret = ArrayUtils.append(ret, this.data);
+        return ret;
     }
 
     /**

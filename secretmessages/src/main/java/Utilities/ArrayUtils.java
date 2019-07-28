@@ -28,4 +28,16 @@ public class ArrayUtils {
         }
         return ret;
     }
+
+    public static byte[] append(byte[] array1, byte[] array2) {
+        byte[] newArray = new byte[array1.length + array2.length];
+
+        for (int i = 0; i < array1.length; i++) {
+            newArray[i] = array1[i];
+        }
+        for (int i = 0, a = array1.length; i < array2.length; i++, a++) {
+            newArray[a] = array2[i];
+        }
+        return newArray;
+    }
 }

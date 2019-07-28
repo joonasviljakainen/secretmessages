@@ -24,9 +24,18 @@ public class Main {
 
             WavFile big = new WavFile("../samples/44kHz.wav");
             System.out.println("");
-            WavFile medium = new WavFile("../samples/16kHz.wav");
-            System.out.println("");
+            //WavFile medium = new WavFile("../samples/16kHz.wav");
+            //System.out.println("");
+            /*
             WavFile small = new WavFile("../samples/8kHz.wav");
+
+            byte[] byt = small.toSaveableByteArray();
+            byte[] straight = IOManager.readFileToBytes("../samples/8kHz.wav");
+            for (int i = 0; i < 100; i++) {
+                System.out.println((char) byt[i] + " :: " + (char) straight[i]);
+            }
+            IOManager.writeBytesToFile(small.toSaveableByteArray(), "test-8khz.wav");*/
+
         } catch (IOException e) {
             System.out.println(e);
         }
