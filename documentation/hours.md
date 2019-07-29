@@ -17,7 +17,7 @@
 |-|-|-|
 | 27.7.2019 | 2h | Gloom & Doom, Reading up on WAV, writing back to file, and some WAVE header parsing |
 | 28.7.2019 | 4,5h | More reading up on WAV, parsing WAVE headers, added sample files with different sampling rates. Now I can see what the file is like. Implemented writing WavFile objects to disk from the pieces they were originally broken into. |
-| 29.7.2019 |||
+| 29.7.2019 | 3h | Added javadoc to wavfile, tests for wavfile, setting up tests and general shenanigans |
 
 ## Week 3
 
