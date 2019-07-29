@@ -75,6 +75,22 @@ public class WavFileTest {
 
         assertEquals(1738008, wav.getSizeInHeader());
         assertEquals(1737972, wav.getDataSize());
+        assertEquals(1737980, wav.getDataChunkSize());
+        assertEquals(4, wav.getBlockAlign());
+        assertEquals(1737972, wav.getDataSizeInDataHeader());
+    }
+
+    @Test
+    public void indexesAreValidForSmallFile() {
+        WavFile wav = new WavFile(smallTestFile);
+
+        assertEquals(44, wav.getAudioStartingIndex());
+    }
+
+    @Test
+    public void returnsIdenticalArrayForSmallFile() {
+        WavFile wav = new WavFile(smallTestFile);
+        assertArrayEquals(smallTestFile, wav.toSaveableByteArray());
     }
 
 }
