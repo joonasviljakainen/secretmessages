@@ -4,6 +4,7 @@ import java.util.Scanner;
 import IO.IOManager;
 import Math.Mathematics;
 import domain.WavFile;
+import IO.IOManager;
 import java.io.IOException;
 
 public class Main {
@@ -22,19 +23,20 @@ public class Main {
 
             IOManager.writeBytesToFile(bytes, "test.wav");
 
-            WavFile big = new WavFile("../samples/44kHz.wav");
+            WavFile big = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
             System.out.println("");
             //WavFile medium = new WavFile("../samples/16kHz.wav");
             //System.out.println("");
-            /*
-            WavFile small = new WavFile("../samples/8kHz.wav");
+
+            WavFile small = new WavFile(IOManager.readFileToBytes("../samples/8kHz.wav"));
+            System.out.println(small.getSummary());
 
             byte[] byt = small.toSaveableByteArray();
-            byte[] straight = IOManager.readFileToBytes("../samples/8kHz.wav");
+            /*byte[] straight = IOManager.readFileToBytes("../samples/8kHz.wav");
             for (int i = 0; i < 100; i++) {
                 System.out.println((char) byt[i] + " :: " + (char) straight[i]);
-            }
-            IOManager.writeBytesToFile(small.toSaveableByteArray(), "test-8khz.wav");*/
+            }*/
+            IOManager.writeBytesToFile(small.toSaveableByteArray(), "test-8khz.wav");
 
         } catch (IOException e) {
             System.out.println(e);

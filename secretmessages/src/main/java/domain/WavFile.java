@@ -5,9 +5,7 @@
  */
 package domain;
 
-import IO.IOManager;
 import Utilities.ArrayUtils;
-import java.io.IOException;
 
 /**
  *
@@ -51,96 +49,130 @@ public class WavFile {
     private int dataSize;
     private byte[] data;
 
-    public WavFile(String location) {
+    /**
+     * Creates a WavFile which can be used for storing and manipulating Wav
+     * Data.
+     * 
+     * The data is generally comprises three parts: the header, the fmt subchunk, and the data subchunk.
+     *
+     * @param bytes Byte array containing the complete byte representation of a
+     * Wav file.
+     */
+    public WavFile(byte[] bytes) {
         try {
-            byte[] bytes = IOManager.readFileToBytes(location);
-
-            // RIFF CHUNK
-            this.riffChunk = ArrayUtils.slice(bytes, 0, 12);
-            this.sizeInHeader = this.littleEndianBytesToInteger(ArrayUtils.slice(this.riffChunk, RIFF_CHUNK_SIZE, RIFF_CHUNK_SIZE + 4));
-            this.format = this.bigEndianBytesToChars(ArrayUtils.slice(this.riffChunk, FORMAT_INDEX, FORMAT_INDEX + 4));
-
-            // FMT SUBCHUNK
-            this.fmtSubChunkId = this.bigEndianBytesToChars(ArrayUtils.slice(bytes, FMT_START_INDEX, FMT_START_INDEX + 4));
-            this.fmtSubChunkSize = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, FMT_SIZE_START_INDEX, FMT_SIZE_START_INDEX + 4));
-            this.audioFormat = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, AUDIO_FORMAT_INDEX, AUDIO_FORMAT_INDEX + 2));
-            this.numChannels = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, NUM_CHANNELS_START_INDEX, NUM_CHANNELS_START_INDEX + 2));
-            this.sampleRate = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, SAMPLE_RATE_START_INDEX, SAMPLE_RATE_START_INDEX + 4));
-            this.byteRate = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, BYTE_RATE_START_INDEX, BYTE_RATE_START_INDEX + 4));
-            this.blockAlign = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, BLOCK_ALIGN_START_INDEX, BLOCK_ALIGN_START_INDEX + 2));
-            this.bitsPerSample = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, BPS_START_INDEX, BPS_START_INDEX + 2));
-
-            // CALCULATING INDEXES
-            this.DATA_CHUNK_START_INDEX = this.fmtSubChunkSize + this.FMT_SIZE_START_INDEX + 4;
-            this.DATA_SIZE_START_INDEX = this.DATA_CHUNK_START_INDEX + 4;
-            this.DATA_START_INDEX = this.DATA_SIZE_START_INDEX + 4;
-            System.out.println("Data chunk start index: " + (DATA_CHUNK_START_INDEX));
-            
+            this.isolateRiff(bytes);
+            this.isolateFmt(bytes);
+            this.calculateNonfixedIndexes();
             // FMT chunk here, because its length was not known for sure previously
             this.fmtChunk = ArrayUtils.slice(bytes, FMT_START_INDEX, DATA_CHUNK_START_INDEX);
+            this.isolateData(bytes);
 
-            // DATA SUBCHUNK
-            this.dataHeader = ArrayUtils.slice(bytes, this.DATA_CHUNK_START_INDEX, this.DATA_START_INDEX);
-            this.dataSize = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, this.DATA_SIZE_START_INDEX, this.DATA_SIZE_START_INDEX + 4));
-            this.data = ArrayUtils.slice(bytes, this.DATA_START_INDEX, bytes.length);
-
-            System.out.println("SIZE - whole file: " + bytes.length);
-            System.out.println("SIZE - in header: " + this.sizeInHeader);
-            System.out.println("Second subchunk size: " + this.fmtSubChunkSize);
-            System.out.println("Audio Format: " + this.audioFormat);
-            System.out.println("Number of Channels: " + this.numChannels);
-            System.out.println("Sample rate: " + this.sampleRate);
-            System.out.println("Byte rate: " + this.byteRate + ", " + (this.sampleRate * this.numChannels * this.bitsPerSample / 8));
-            System.out.println("Block Align: " + this.blockAlign + ", " + (this.numChannels * this.bitsPerSample / 8));
-            System.out.println("Bits per sample: " + this.bitsPerSample);
-            System.out.println("Data starting bytes: ");
-            for (int i = this.DATA_CHUNK_START_INDEX; i < this.DATA_SIZE_START_INDEX; i++) {
-                System.out.print((char) (bytes[i]));
-            }
-            System.out.println("");
-            System.out.println("Data size: " + this.dataSize);
-            System.out.println("Length of this.data: " + this.data.length);
-            System.out.println("");
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println(e);
-            System.out.println("ERROR ERRO R ");
+            System.out.println("ERROR ERROR ");
         }
 
     }
 
-    public byte[] getData() {
-        return this.data;
+    private void isolateRiff(byte[] bytes) {
+        this.riffChunk = ArrayUtils.slice(bytes, 0, 12);
+        this.sizeInHeader = this.littleEndianBytesToInteger(ArrayUtils.slice(this.riffChunk, RIFF_CHUNK_SIZE, RIFF_CHUNK_SIZE + 4));
+        this.format = this.bigEndianBytesToChars(ArrayUtils.slice(this.riffChunk, FORMAT_INDEX, FORMAT_INDEX + 4));
+        // TODO: validateRiff()
     }
 
-    public void setData(byte[] data) {
+    private void isolateFmt(byte[] bytes) {
+        this.fmtSubChunkId = this.bigEndianBytesToChars(ArrayUtils.slice(bytes, FMT_START_INDEX, FMT_START_INDEX + 4));
+        this.fmtSubChunkSize = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, FMT_SIZE_START_INDEX, FMT_SIZE_START_INDEX + 4));
+        this.audioFormat = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, AUDIO_FORMAT_INDEX, AUDIO_FORMAT_INDEX + 2));
+        this.numChannels = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, NUM_CHANNELS_START_INDEX, NUM_CHANNELS_START_INDEX + 2));
+        this.sampleRate = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, SAMPLE_RATE_START_INDEX, SAMPLE_RATE_START_INDEX + 4));
+        this.byteRate = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, BYTE_RATE_START_INDEX, BYTE_RATE_START_INDEX + 4));
+        this.blockAlign = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, BLOCK_ALIGN_START_INDEX, BLOCK_ALIGN_START_INDEX + 2));
+        this.bitsPerSample = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, BPS_START_INDEX, BPS_START_INDEX + 2));
+    }
+
+    private void calculateNonfixedIndexes() {
+        this.DATA_CHUNK_START_INDEX = this.fmtSubChunkSize + this.FMT_SIZE_START_INDEX + 4;
+        this.DATA_SIZE_START_INDEX = this.DATA_CHUNK_START_INDEX + 4;
+        this.DATA_START_INDEX = this.DATA_SIZE_START_INDEX + 4;
+    }
+
+    private void isolateData(byte[] bytes) {
+        // DATA SUBCHUNK
+        this.dataHeader = ArrayUtils.slice(bytes, this.DATA_CHUNK_START_INDEX, this.DATA_START_INDEX);
+        this.dataSize = this.littleEndianBytesToInteger(ArrayUtils.slice(bytes, this.DATA_SIZE_START_INDEX, this.DATA_SIZE_START_INDEX + 4));
+        this.data = ArrayUtils.slice(bytes, this.DATA_START_INDEX, bytes.length);
+    }
+
+    /**
+     * Sets the audio data, i.e. data subchunk excluding subchunk id and
+     * subchunk size.
+     *
+     * @param data
+     */
+    public void setAudioData(byte[] data) {
         this.data = data;
     }
 
+    /**
+     * Returns the header of the wav file, i.e. bytes 0-11.
+     *
+     * @return byte[12] containing the first 12 bytes of the file.
+     */
     public byte[] getHeaderChunk() {
         return this.riffChunk;
     }
 
+    /**
+     * Gets the size of the data subchunk, including data, subchunk id, and
+     * subchunk size.
+     *
+     * @return Size of the entire data subchunk.
+     */
     public int getDataChunkSize() {
         return this.data.length + this.dataHeader.length;
     }
 
-    public int getSizeInheader() {
+    /**
+     *
+     * @return File size as given in the header (bytes 4-8 of the file).
+     */
+    public int getSizeInHeader() {
         return this.sizeInHeader;
     }
 
+    /**
+     * Returns the audio format of the file, usually value 1. if the value is
+     * other than 1, the file is probably compressed and this program can't
+     * handle it.
+     *
+     * @return Audio format of the file as Integer.
+     */
     public int getAudioFormat() {
         return this.audioFormat;
     }
 
+    /**
+     * @return Number of channels in the file. Typically 2.
+     */
     public int getNumberOfChannels() {
         return this.numChannels;
     }
 
+    /**
+     * Returns the sample rate of the file, e.g. 44100, 92000, 16000.
+     *
+     * @return Sample rate as Hz.
+     */
     public int getSampleRate() {
         return this.sampleRate;
     }
 
+    /**
+     *
+     * @return Byte rate as bytes per second.
+     */
     public int getByteRate() {
         return this.byteRate;
     }
@@ -149,27 +181,52 @@ public class WavFile {
         return this.blockAlign;
     }
 
+    /**
+     * Returns the number of bits per each sample, e.g. 8, 16, 32.
+     *
+     * @return Bits per sample.
+     */
     public int getBitsPerSample() {
-        return this.getBitsPerSample();
+        return this.bitsPerSample;
     }
 
+    /**
+     * Returns the index at which the audio data begins, i.e. after the data
+     * subchunk id and data subchunk size.
+     *
+     * @return Index at which audio data begins.
+     */
     public int getAudioStartingIndex() {
         return this.DATA_START_INDEX;
     }
 
+    /**
+     *
+     * @return the size of the audio data as given in the subchunk size field of
+     * the data subchunk.
+     */
     public int getDataSize() {
         return this.dataSize;
     }
 
+    /**
+     * Gets the data subchunk without chunk id and chunk size, i.e. only the
+     * audio bytes.
+     *
+     * @return byte[] containing all audio bytes of the file
+     */
     public byte[] getAudioData() {
         return this.data;
     }
 
+    /**
+     * Creates a byte array which can be used as-is for writing the file to
+     * disk. If the data has not been modified, this method will return a byte
+     * array identical to the input given to the constructor.
+     *
+     * @return byte[] containing the entire file
+     */
     public byte[] toSaveableByteArray() {
-        System.out.println("rifff: " + this.riffChunk.length);
-        System.out.println("fmt: " + this.fmtChunk.length);
-        System.out.println("dataheader : " + this.dataHeader.length);
-        System.out.println("data: " + this.data.length);
         byte[] ret = ArrayUtils.append(this.riffChunk, this.fmtChunk);
         ret = ArrayUtils.append(ret, this.dataHeader);
         ret = ArrayUtils.append(ret, this.data);
@@ -177,17 +234,39 @@ public class WavFile {
     }
 
     /**
+     * Gets file size as described in the file header
      *
-     * @return
+     * @return File size - 8
      */
-    public int getProscribedDataSize() {
+    public int getDataSizeInDataHeader() {
         return littleEndianBytesToInteger(ArrayUtils.slice(this.dataHeader, 4, 8));
     }
 
     /**
      *
-     * @param bytes
      * @return
+     */
+    public String getSummary() {
+        String summary = "SIZE - in header: " + this.sizeInHeader
+                + "\nSecond subchunk size: " + this.fmtSubChunkSize
+                + "\nAudio Format: " + this.audioFormat
+                + "\nNumber of Channels: " + this.numChannels
+                + "\nSample rate: " + this.sampleRate
+                + "\nByte rate: " + this.byteRate + ", " + ((this.sampleRate * this.numChannels * this.bitsPerSample / 8))
+                + "\nBlock Align: " + this.blockAlign + ", " + (this.numChannels * this.bitsPerSample / 8)
+                + "\nBits per sample: " + this.bitsPerSample
+                + "\nData chunk start index: " + (DATA_CHUNK_START_INDEX)
+                + "\nData size: " + this.dataSize
+                + "\nLength of this.data: " + this.data.length;
+        return summary;
+    }
+
+    /**
+     * Creates an integer value our of of 1-4 bytes that form a little-endian
+     * word.
+     *
+     * @param bytes little-endian word as bytes
+     * @return Integer Integer value of the word
      */
     private Integer littleEndianBytesToInteger(byte[] bytes) {
         if (bytes.length > 4) {
@@ -199,7 +278,6 @@ public class WavFile {
             temp = (bytes[i] & 0xFF) << (8 * i);
             integer = integer | temp;
         }
-        //int integer = (bytes[3] & 0xff) << 24 | (bytes[2] & 0xff) << 16 | (bytes[1] & 0xff) << 8 | bytes[0] & 0xff;
         return integer;
     }
 
@@ -218,8 +296,6 @@ public class WavFile {
             ret[i] = (char) (bytes[i]);
         }
         return ret;
-        //int integer = (bytes[3] & 0xff) << 24 | (bytes[2] & 0xff) << 16 | (bytes[1] & 0xff) << 8 | bytes[0] & 0xff;
-        //return integer;
     }
 
 }
