@@ -6,6 +6,7 @@ import Math.Mathematics;
 import domain.WavFile;
 import IO.IOManager;
 import java.io.IOException;
+import Steganography.LSBEncoder;
 
 public class Main {
 
@@ -30,6 +31,24 @@ public class Main {
 
             WavFile small = new WavFile(IOManager.readFileToBytes("../samples/8kHz.wav"));
             System.out.println(small.getSummary());
+            System.out.println("Can save up to " + LSBEncoder.analyzeMaxNumberOfBytes(small.getAudioData(), small.getBlockAlign()) + " bytes");
+            System.out.println(Integer.toBinaryString((byte) 120));
+            byte test1 = LSBEncoder.interleaveBitToByte((byte) 120, 0);
+            byte test2 = LSBEncoder.interleaveBitToByte((byte) 120, 1);
+            
+            System.out.println("120, 0:" + Integer.toBinaryString(test1));
+            System.out.println("Extracted::" + Integer.toBinaryString(LSBEncoder.extractBitFromByte(test1)));
+            System.out.println("120, 1:" + Integer.toBinaryString(test2));
+            System.out.println("Extracted::" + Integer.toBinaryString(LSBEncoder.extractBitFromByte(test2)));
+
+            System.out.println("0:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 0)));
+            System.out.println("1:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 1)));
+            System.out.println("2:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 2)));
+            System.out.println("3:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 3)));
+            System.out.println("120:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 120)));
+            System.out.println("121:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 121)));
+            System.out.println("122:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 122)));
+            System.out.println("123:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 123)));
 
             byte[] byt = small.toSaveableByteArray();
             /*byte[] straight = IOManager.readFileToBytes("../samples/8kHz.wav");
