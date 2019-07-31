@@ -15,51 +15,35 @@ public class Main {
 
         try {
             byte[] bytes = IOManager.readFileToBytes("../samples/a2002011001-e02.wav");
-            /*for (int i = 0; i < 40; i++) {
-                for (int j = 0; j < 4; j++) {
-                    System.out.print((char) (bytes[4 * i + j]));
-                }
-                System.out.println();
-            }*/
-
-            IOManager.writeBytesToFile(bytes, "test.wav");
-
             WavFile big = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
-            System.out.println("");
-            //WavFile medium = new WavFile("../samples/16kHz.wav");
-            //System.out.println("");
+            Long l;
+            char[] test = "TOOT TOOT TOOTSIE TOOTSIE".toCharArray();
 
-            WavFile small = new WavFile(IOManager.readFileToBytes("../samples/8kHz.wav"));
-            System.out.println(small.getSummary());
-            System.out.println("Can save up to " + LSBEncoder.analyzeMaxNumberOfBytes(small.getAudioData(), small.getBlockAlign()) + " bytes");
-            System.out.println(Integer.toBinaryString((byte) 120));
-            byte test1 = LSBEncoder.interleaveBitToByte((byte) 120, 0);
-            byte test2 = LSBEncoder.interleaveBitToByte((byte) 120, 1);
-            
-            System.out.println("120, 0:" + Integer.toBinaryString(test1));
-            System.out.println("Extracted::" + Integer.toBinaryString(LSBEncoder.extractBitFromByte(test1)));
-            System.out.println("120, 1:" + Integer.toBinaryString(test2));
-            System.out.println("Extracted::" + Integer.toBinaryString(LSBEncoder.extractBitFromByte(test2)));
+            byte[] bigTestEncoded = LSBEncoder.interleaveMessageInBytes(big.getAudioData(), test, 4);
+            big.setAudioData(bigTestEncoded);
+            IOManager.writeBytesToFile(big.toSaveableByteArray(), "encoded-test-44kHz.wav");
+            WavFile toDecode = new WavFile(IOManager.readFileToBytes("encoded-test-44kHz.wav"));
 
-            System.out.println("0:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 0)));
-            System.out.println("1:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 1)));
-            System.out.println("2:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 2)));
-            System.out.println("3:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 3)));
-            System.out.println("120:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 120)));
-            System.out.println("121:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 121)));
-            System.out.println("122:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 122)));
-            System.out.println("123:" + Integer.toBinaryString(LSBEncoder.extractBitFromByte((byte) 123)));
+            l = System.currentTimeMillis();
+            byte[] message = LSBEncoder.extractMessageFromBytes(toDecode.getAudioData(), 4);
+            byte[] mes = LSBEncoder.extractMessageFromBytes(bigTestEncoded, 4);
+            System.out.println("extracting BIG took " + (System.currentTimeMillis() - l) + "ms");
 
-            byte[] byt = small.toSaveableByteArray();
-            /*byte[] straight = IOManager.readFileToBytes("../samples/8kHz.wav");
-            for (int i = 0; i < 100; i++) {
-                System.out.println((char) byt[i] + " :: " + (char) straight[i]);
-            }*/
-            IOManager.writeBytesToFile(small.toSaveableByteArray(), "test-8khz.wav");
+            System.out.println("Extracted messages:");
+            for (int i = 0; i < message.length; i++) {
+                System.out.print((char) (message[i]));
+            }
 
         } catch (IOException e) {
             System.out.println(e);
         }
         return;
+    }
+
+    public static byte abs(byte src) {
+        if (src < 0) {
+            return (byte) -src;
+        }
+        return src;
     }
 }
