@@ -17,12 +17,14 @@ This project will target Microsoft WAV files, as they are a simple starting poin
 
 ## Documentation
 
-[Design document](/documentation/design.md)
+- [Design document](/documentation/design.md)
+- [Testing document](/documentation/testing.md)
 
 
 ## Weekly reports
 
 - [Weekly report #1](/documentation/report1.md)
+- [Weekly report #2](/documentation/report2.md)
 
 
 

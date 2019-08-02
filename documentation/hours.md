@@ -14,6 +14,8 @@
 
 ## Week 2
 
+[Weekly report #2](/documentation/report2.md)
+
 | Date | Time spent | Description |
 |-|-|-|
 | 27.7.2019 | 2h | Gloom & Doom, Reading up on WAV, writing back to file, and some WAVE header parsing |
@@ -21,6 +23,10 @@
 | 29.7.2019 | 3h | Added javadoc to wavfile, tests for wavfile, setting up tests and general shenanigans |
 | 30.7.2019 | 1h | Implemented basic bit interleaving and extraction for single bits. |
 | 31.7.2019 | 4h | Pain and suffering, I struggled a lot bit LSB encoding and decoding in its simple form is now available. |
+| 2.8.2019 | 3h | Fixed LSB, wrote tests, refactored project for maintainability. Wrote report and documentation |
+| __Total__ | 17,5h | That's alot of hours. I did ok mostly. |
+
+Subtotal for the first 2 weeks: __21,5h__
 
 ## Week 3
 

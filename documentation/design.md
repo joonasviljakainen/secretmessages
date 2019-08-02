@@ -6,9 +6,10 @@ Secret Messages will be a java program that can be run from the command line. It
 
 ## Algorithms
 
-__Least-Significant Bit encoding__ will be used for hiding the messages. If I have the time, I will implement a second algorithm for comparison (e.g. __Echo Hiding__, or something simpler).
+__Least-Significant Bit encoding__ will be used for hiding the messages. 
 
-- Question to the director: would it be wiser to implement e.g. a pen-and-paper encryption algorithm to go with the hidden message, as opposed to implementing an alternative hiding algorithm? Echo hiding will require writing a lot of mathematically intense functions.
+I will implement a second algorithm for comparison (e.g. __Echo Hiding__, or something simpler).
+
 
 ### Time & space complexities
 
