@@ -1,5 +1,8 @@
 package Steganography;
 
+import static Utilities.BitManipulation.getNthBitFromByte;
+import static Utilities.BitManipulation.extractFinalBitFromByte;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -44,6 +47,12 @@ public class LSBEncoder {
         return target;
     }
 
+    /**
+     *
+     * @param source
+     * @param blockAlign
+     * @return
+     */
     public static byte[] extractMessageFromBytes(byte[] source, int blockAlign) {
         byte[] message = new byte[(source.length / blockAlign) / 200];
 
@@ -58,18 +67,12 @@ public class LSBEncoder {
             curBit = (byte) extractFinalBitFromByte(source[i]);
             if (curBit == 1) {
                 byte bitpos = (byte) (curBit << locationInByte);
-                message[locInMsg] = (byte)(message[locInMsg] | bitpos);
+                message[locInMsg] = (byte) (message[locInMsg] | bitpos);
             } else {
-                
-            }
-            //byte bitpos = (byte) (curBit << locationInByte);
-            //byte temp = (byte) (curBit * powerOfTwo(locationInByte));
-            //message[locInMsg] += (byte) (curBit * powerOfTwo(locationInByte));
 
+            }
             if (++locationInByte >= 8) {
                 locationInByte = 0;
-                //message[locInMsg] = (byte) (message[locInMsg] >>> 1);
-                //System.out.println(message[locInMsg]);
                 if (++locInMsg >= message.length) {
                     locInMsg = 0;
                 }
@@ -77,68 +80,4 @@ public class LSBEncoder {
         }
         return message;
     }
-
-    public static int getNthBitFromByte(byte source, int n) {
-        if (n < 0 || n > 7) {
-            throw new Error("Number " + n + " is outside of range 0-7!");
-        }
-        
-        return (powerOfTwo(n) & source) >>> n;
-    }
-
-    public static byte powerOfTwo(int n) {
-        if (n < 0) {
-            throw new Error("can' calcluate negative powers");
-        }
-        if (n == 0) {
-            return 1;
-        }
-        int accum = 1;
-        for (int i = 0; i < n; i++) {
-            accum *= 2;
-        }
-        return (byte) accum;
-    }
-
-    public static int setNthBitInByte(int n, int value) {
-
-        if (n < 0 || n > 7) {
-            throw new Error("Number " + n + " is outside of range 0-7!");
-        }
-        // TODO fix
-        byte temp = (byte) (2 ^ n);
-        return 2 ^ n;
-    }
-
-    /**
-     *
-     * @param bytes
-     * @param chunkSize
-     * @return
-     */
-    public static int analyzeMaxNumberOfBytes(byte[] bytes, int chunkSize) {
-        return bytes.length / chunkSize;
-    }
-
-    /**
-     *
-     * @param target
-     * @param data
-     * @return
-     */
-    public static byte interleaveBitToByte(byte target, int data) {
-        int bitmask = Integer.MAX_VALUE - 1;
-        int temp = target & bitmask;
-        return (byte) (temp | data);
-    }
-
-    /**
-     *
-     * @param source
-     * @return
-     */
-    public static int extractFinalBitFromByte(byte source) {
-        return source & 1; // either 1 or 0
-    }
-
 }
