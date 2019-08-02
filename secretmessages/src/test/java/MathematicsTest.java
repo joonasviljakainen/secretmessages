@@ -51,13 +51,20 @@ public class MathematicsTest {
         }
     }
     
-    @Test
-    public void powerOfTwoOnlyAcceptsvaluesbetweenZeroAndEight() {
-        // TODO
+    @Test(expected = IllegalArgumentException.class)
+    public void powerOfTwoOnlyAcceptsValuesNonnegativeArguments() {
+        int a = Mathematics.powerOfTwo(-1);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void powerOfTwoOnlyAcceptsValuesBelowEight() {
+        int a = Mathematics.powerOfTwo(8);
     }
     
     @Test
     public void correctAbsValue() {
-        
+        assertEquals(6, Mathematics.abs(6));
+        assertEquals(Mathematics.abs(-6), Mathematics.abs(6));
+        assertEquals(0, Mathematics.abs(0));
     }
 }

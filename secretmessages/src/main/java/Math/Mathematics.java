@@ -6,11 +6,18 @@
 package Math;
 
 /**
+ * Contains various mathematical functions.
  *
  * @author joonas
  */
 public class Mathematics {
 
+    /**
+     * Returns the absolute value of the provided integer.
+     *
+     * @param number
+     * @return Absolute value of the parameter.
+     */
     public static int abs(int number) {
         if (number >= 0) {
             return number;
@@ -18,12 +25,20 @@ public class Mathematics {
         return -number;
     }
 
-    public static byte powerOfTwo(int n) {
+    /**
+     * Returns the nth power of two in byte range (i.e. 1-8). For indexing, 0 is
+     * the the first power of two, i.e. in the rightmost bit position.
+     *
+     * @param n The power to which two should be elevated.
+     * @return The power of 2
+     * @throws IllegalArgumentException
+     */
+    public static byte powerOfTwo(int n) throws IllegalArgumentException {
         if (n < 0) {
-            throw new Error("can' calcluate negative powers");
+            throw new IllegalArgumentException("can' calcluate negative powers");
         }
         if (n > 7) {
-            throw new Error("Bytes only allow up to 7 powers of two");
+            throw new IllegalArgumentException("Bytes only allow up to 7 powers of two");
         }
         if (n == 0) {
             return 1;
