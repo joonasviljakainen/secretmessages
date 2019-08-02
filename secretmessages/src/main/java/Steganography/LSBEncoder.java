@@ -32,6 +32,7 @@ public class LSBEncoder {
         int locInMsg = 0;                               // how many-th byte of the message is being looked at
         int curBit;                                     // The current bit value to embed in the audio
         for (int i = 0; i < target.length; i += blockLength) {
+            //for (int i = 0; i < message.length * 8; i += blockLength) {
             curBit = getNthBitFromByte((byte) message[locInMsg], locationInByte); // the bit to embed
             int mask = 0xfe;                            // 11111110
             int temp = mask & target[i];                // ensure that last bit is 0
@@ -54,7 +55,8 @@ public class LSBEncoder {
      * @return
      */
     public static byte[] extractMessageFromBytes(byte[] source, int blockAlign) {
-        byte[] message = new byte[(source.length / blockAlign) / 200];
+        byte[] message = new byte[(source.length / blockAlign) / 8];
+        System.out.println("message.length: " + message.length);
 
         for (int i = 0; i < message.length; i++) {
             message[i] = (byte) 0x00;
@@ -63,19 +65,17 @@ public class LSBEncoder {
         int locationInByte = 0;                 // how many-th bit of the current byte is being looked at
         int locInMsg = 0;                       // how many-th byte in the message array
         int curBit;                             // current bit to embed
-        for (int i = 0; i < source.length; i += blockAlign) {
+        for (int i = 0; locInMsg < message.length; i += blockAlign) {
             curBit = (byte) extractFinalBitFromByte(source[i]);
             if (curBit == 1) {
                 byte bitpos = (byte) (curBit << locationInByte);
                 message[locInMsg] = (byte) (message[locInMsg] | bitpos);
             } else {
-
+                //
             }
             if (++locationInByte >= 8) {
                 locationInByte = 0;
-                if (++locInMsg >= message.length) {
-                    locInMsg = 0;
-                }
+                locInMsg++;
             }
         }
         return message;

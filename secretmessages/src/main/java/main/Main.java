@@ -17,7 +17,7 @@ public class Main {
             byte[] bytes = IOManager.readFileToBytes("../samples/a2002011001-e02.wav");
             WavFile big = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
             Long l;
-            char[] test = "TOOT TOOT TOOTSIE TOOTSIe".toCharArray();
+            char[] test = "TOOT TOOT TOOTSIE TOOTSIE".toCharArray();
             //char[] test = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
             byte[] bigTestEncoded = LSBEncoder.interleaveMessageInBytes(big.getAudioData(), test, 4);
@@ -39,8 +39,8 @@ public class Main {
             System.out.println("");
 
             
-            //char[] test2 ="HIPSTERIBRUNSSI ON MAHTAVAAAA".toCharArray();
-            char[] test2 = "ASDFGHJKQWERTYUIOPZXFGHJK".toCharArray();
+            char[] test2 ="HIPSTERIBRUNSSI ON MAHTAVAAAA".toCharArray();
+            //char[] test2 = "ASDFGHJKQWERTYUIOPZXFGHJK".toCharArray();
             //char[] test2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
             //char[] test2 = "TOOT TOOT TOOTSIE TOOTSIE".toCharArray();
             WavFile big2 = new WavFile(IOManager.readFileToBytes("../samples/8kHz.wav"));
@@ -48,7 +48,7 @@ public class Main {
             big2.setAudioData(encoded2);
             byte[] mes2 = LSBEncoder.extractMessageFromBytes(big2.getAudioData(), 4);
 
-            for (int i = 0; i < mes2.length; i++) {
+            for (int i = 0; i < test2.length; i++) {
                 System.out.print((char) mes2[i]);
             }
 
