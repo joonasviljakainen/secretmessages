@@ -30,6 +30,19 @@ Subtotal for the first 2 weeks: __21,5h__
 
 ## Week 3
 
+[Weekly report #3](/documentation/report3.md)
+
+| Date | Time spent | Description |
+|-|-|-|
+| 4.8.2019 | 0,5h | Research |
+| 5.8.2019 | 1,5h | Research |
+| 6.8.2019 | 1h| Research. Added JTransform package for dealing with Fourier Transforms. |
+| 9.8.2019 | 2h | More research. I worked on transforming audio bytes to doubles for fourier transformations. |
+| __Total__ | 5h | This week I was super tired, so I focused on trying to understand what I was doing. |
+
+Subtotal for 3 weeks: 26,5h
+
+
 ## Week 4
 
 ## Week 5

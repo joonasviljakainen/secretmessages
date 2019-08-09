@@ -52,8 +52,9 @@ public class WavFile {
     /**
      * Creates a WavFile which can be used for storing and manipulating Wav
      * Data.
-     * 
-     * The data is generally comprises three parts: the header, the fmt subchunk, and the data subchunk.
+     *
+     * The data is generally comprises three parts: the header, the fmt
+     * subchunk, and the data subchunk.
      *
      * @param bytes Byte array containing the complete byte representation of a
      * Wav file.
@@ -240,6 +241,34 @@ public class WavFile {
      */
     public int getDataSizeInDataHeader() {
         return littleEndianBytesToInteger(ArrayUtils.slice(this.dataHeader, 4, 8));
+    }
+
+    /**
+     * Returns the audio bytes for one channel as indicated by the parameter
+     * num. The byte data returned is raw, i.e. it contains the bytes in the
+     * order they appear in the audio file. If the audio is 16-bit PCM, which is
+     * little endian, the bytes will need to be processed separately to bring
+     * them in the desired order for type conversions.
+     *
+     * @param num The channel from which to extract audio data.
+     * @return raw bytes of the audio channel.
+     */
+    public byte[] getChannelByNumber(int num) {
+        if (num > this.numChannels || num < 0) {
+            throw new IllegalArgumentException("");
+        }
+        byte[] channelBytes = new byte[this.data.length / this.numChannels];
+
+        int numOfBytesInSample = this.bitsPerSample / 8;
+        int startingIndex = (num - 1) * numOfBytesInSample;
+        int locationInTargetArray = 0;
+        for (int i = startingIndex; i < this.data.length; i += this.blockAlign) {
+            for (int l = 0; l < numOfBytesInSample; l++) {
+                channelBytes[locationInTargetArray] = this.data[i + l];
+                locationInTargetArray++;
+            }
+        }
+        return channelBytes;
     }
 
     /**

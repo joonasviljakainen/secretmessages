@@ -93,4 +93,27 @@ public class WavFileTest {
         assertArrayEquals(smallTestFile, wav.toSaveableByteArray());
     }
 
+    @Test
+    public void gettingChannelBytesReturnsReasonableValues() {
+        byte[] testData = new byte[40];
+        WavFile wav = new WavFile(smallTestFile);
+        for (int i = 0; i < testData.length; i += 4) {
+            testData[i] = 4;
+            testData[i + 1] = 0;
+            testData[i + 2] = 8;
+            testData[i + 3] = 0;
+        }
+
+        wav.setAudioData(testData);
+        byte[] firstChannelData = wav.getChannelByNumber(1);
+        byte[] secondChannelData = wav.getChannelByNumber(2);
+
+        for (int i = 0; i < 20; i += 2) {
+            assertEquals(firstChannelData[i], 4);
+            assertEquals(firstChannelData[i + 1], 0);
+            assertEquals(secondChannelData[i], 8);
+            assertEquals(secondChannelData[i + 1], 0);
+        }
+    }
+
 }

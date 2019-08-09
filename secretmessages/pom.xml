@@ -19,6 +19,12 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.wendykierp</groupId>
+            <artifactId>JTransforms</artifactId>
+            <version>3.1</version>
+            <classifier>with-dependencies</classifier>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -37,6 +43,17 @@
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>1.1.8</version>
+                <configuration>
+                    <targetClasses>
+                        <param>Steganography.*</param>
+                        <param>domain.*</param>
+                        <param>utilities.*</param>
+                        <param>math.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>*</param>
+                    </targetTests>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
