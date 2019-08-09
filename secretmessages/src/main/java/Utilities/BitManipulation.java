@@ -64,4 +64,14 @@ public class BitManipulation {
     public static int extractFinalBitFromByte(byte source) {
         return source & 1; // either 1 or 0
     }
+
+    /**
+     * Combines two bytes in little-endian order to form a short.
+     * @param littleEnd The least-significant byte
+     * @param start The most significant byte
+     * @return A short representing the combination of the two bytes.
+     */
+    public static short littleEndianBytesToShort(byte littleEnd, byte start) {
+        return (short) ((start) << 8 | littleEnd & 0xff);
+    }
 }

@@ -5,20 +5,19 @@ import org.junit.Test;
 import static Utilities.BitManipulation.getNthBitFromByte;
 import static Utilities.BitManipulation.extractFinalBitFromByte;
 import static Utilities.BitManipulation.interleaveBitToByte;
+import static Utilities.BitManipulation.littleEndianBytesToShort;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author joonas
  */
 public class BitUtilitiesTest {
-    
-    
+
     @Test
     public void singleBitsInterleavedCorrectly() {
         byte test1 = 120;
@@ -86,5 +85,46 @@ public class BitUtilitiesTest {
 
         int test6 = getNthBitFromByte((byte) 16, 5);
         assertEquals(0, test6);
+    }
+
+    @Test
+    public void bytesToShortConversionMakesSense() {
+        byte small1 = 8;
+        byte big1 = 8; // --> 2048 when shifted
+        short s1 = littleEndianBytesToShort(small1, big1);
+        assertEquals(s1, 2056);
+        assertEquals(Integer.toBinaryString(s1), "100000001000");
+    }
+
+    @Test
+    public void secondSimpleTestWithShortMaker() {
+        byte small2 = 63;
+        byte big2 = 50; // --> 12800 when shifted
+        short s2 = littleEndianBytesToShort(small2, big2);
+        assertEquals(s2, 12863);
+        assertEquals(Integer.toBinaryString(s2), "11001000111111");
+    }
+
+    @Test
+    public void thingsWithManyOnesTranslateToShorts() {
+        byte small3 = -127; // --> 129 in the unsigned world
+        byte big3 = 50; // --> 12800 when shifted
+        short s3 = littleEndianBytesToShort(small3, big3);
+        /*System.out.println(small3);
+        System.out.println(Integer.toBinaryString(small3));
+        System.out.println(big3);
+        System.out.println(Integer.toBinaryString(big3));
+        System.out.println(s3);
+        System.out.println(Integer.toBinaryString(s3));
+        System.out.println((float)(s3));*/
+        assertEquals(s3, 12929);
+        assertEquals(Integer.toBinaryString(s3), "11001010000001");
+    }
+
+    @Test
+    public void bytesToShortCompareEquallyToByteBuffer() {
+        //byte[] data = [8, 8, 4, 4];
+        
+        // TODO compare my solution for little-endian shorts with ByteBuffer
     }
 }
