@@ -1,5 +1,7 @@
 # Weekly report 3
 
+[Hour reporting](/documentation/hours.md#Week%203)
+
 ## Summary
 
 I was super tired and the math is confusing so I worked less this week, and most of what I did do centered around understanding what I'm going to implement.

@@ -40,7 +40,7 @@ Subtotal for the first 2 weeks: __21,5h__
 | 9.8.2019 | 2,5h | More research. I worked on transforming audio bytes to doubles for fourier transformations. |
 | __Total__ | 5,5h | This week I was super tired, so I focused on trying to understand what I was doing. |
 
-Subtotal for 3 weeks: 26,5h
+Subtotal for 3 weeks: 27h
 
 
 ## Week 4
