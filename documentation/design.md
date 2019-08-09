@@ -13,6 +13,9 @@ I will implement a second algorithm for comparison (e.g. __Echo Hiding__, or som
 
 ### Time & space complexities
 
+
+Least-significant bit -related complexities are all O(n). As relates to echo hiding, the best Fourier transforms appear to have a complexity on the scale of _nLog(n)_.
+
 At the moment the time complexity of all operations appears to be O(n). In addition, implementing echo hiding would require working on somewhat complicated mathematical functions.
 
 Space requirements as I see them at the moment are also O(n) (possibly O(2n), to be more specific).
