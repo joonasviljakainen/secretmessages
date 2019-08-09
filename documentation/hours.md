@@ -37,8 +37,8 @@ Subtotal for the first 2 weeks: __21,5h__
 | 4.8.2019 | 0,5h | Research |
 | 5.8.2019 | 1,5h | Research |
 | 6.8.2019 | 1h| Research. Added JTransform package for dealing with Fourier Transforms. |
-| 9.8.2019 | 2h | More research. I worked on transforming audio bytes to doubles for fourier transformations. |
-| __Total__ | 5h | This week I was super tired, so I focused on trying to understand what I was doing. |
+| 9.8.2019 | 2,5h | More research. I worked on transforming audio bytes to doubles for fourier transformations. |
+| __Total__ | 5,5h | This week I was super tired, so I focused on trying to understand what I was doing. |
 
 Subtotal for 3 weeks: 26,5h
 
