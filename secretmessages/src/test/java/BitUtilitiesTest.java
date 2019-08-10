@@ -6,6 +6,7 @@ import static Utilities.BitManipulation.getNthBitFromByte;
 import static Utilities.BitManipulation.extractFinalBitFromByte;
 import static Utilities.BitManipulation.interleaveBitToByte;
 import static Utilities.BitManipulation.littleEndianBytesToShort;
+import static Utilities.BitManipulation.shortToLittleEndianBytes;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -127,4 +128,21 @@ public class BitUtilitiesTest {
         
         // TODO compare my solution for little-endian shorts with ByteBuffer
     }
+    
+    @Test
+    public void shortToLittleEndianWorks() {
+        short s = 255; // -->  0000000011111111
+        byte[] test1 = shortToLittleEndianBytes(s);
+        assertEquals(test1[0], -1);
+        assertEquals(test1[1], 0);
+    }
+    
+    @Test
+    public void anotherSmallTestForShortToLittleEndian() {
+        short s = 12929; // --> 0011001010000001
+        byte[] test2 = shortToLittleEndianBytes(s);
+        assertEquals(test2[0], -127);
+        assertEquals(test2[1], 50);
+    }
+    
 }

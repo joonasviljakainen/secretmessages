@@ -67,11 +67,24 @@ public class BitManipulation {
 
     /**
      * Combines two bytes in little-endian order to form a short.
+     *
      * @param littleEnd The least-significant byte
      * @param start The most significant byte
      * @return A short representing the combination of the two bytes.
      */
     public static short littleEndianBytesToShort(byte littleEnd, byte start) {
         return (short) ((start) << 8 | littleEnd & 0xff);
+    }
+
+    /**
+     *  Converts a single short to two bytes, ordered in little-endian fashion.
+     * @param num
+     * @return
+     */
+    public static byte[] shortToLittleEndianBytes(short num) {
+        byte[] res = new byte[2];
+        res[1] = (byte) (num >>> 8);
+        res[0] = (byte) (num & 255);
+        return res;
     }
 }
