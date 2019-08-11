@@ -45,6 +45,15 @@ Subtotal for 3 weeks: 27h
 
 ## Week 4
 
+| Date | Time spent | Description |
+|-|-|-|
+| 10.8.2019 | 2h | Converting shorts to little-endian bytes. Work on creating my first echoes. |
+| 11.8.2019 | 3h | Implemented a simple echo function. The values still need to be normalized i.e. I need to create overflow checks. |
+| __Total__ | 2,5h |  |
+
+Subtotal for 4 weeks: 
+
+
 ## Week 5
 
 ## Week 6
