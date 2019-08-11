@@ -142,7 +142,7 @@ public class BitUtilitiesTest {
         short s = 12929; // --> 0011001010000001
         byte[] test2 = shortToLittleEndianBytes(s);
         assertEquals(test2[0], -127);
-        assertEquals(test2[1], 50);
+        assertEquals(test2[1], 50 );
     }
     
 }

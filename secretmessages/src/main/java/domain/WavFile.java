@@ -271,6 +271,22 @@ public class WavFile {
         return channelBytes;
     }
 
+    public void setChannelByNumber(int num, byte[] source) {
+        if (num > this.numChannels || num < 0) {
+            throw new IllegalArgumentException("");
+        }
+
+        int numOfBytesInSample = this.bitsPerSample / 8;
+        int startingIndex = (num - 1) * numOfBytesInSample;
+        int locationInSourceArray = 0;
+        for (int i = startingIndex; i < this.data.length; i += this.blockAlign) {
+            for (int l = 0; l < numOfBytesInSample; l++) {
+                this.data[i + l] = source[locationInSourceArray];
+                locationInSourceArray++;
+            }
+        }
+    }
+
     /**
      *
      * @return
