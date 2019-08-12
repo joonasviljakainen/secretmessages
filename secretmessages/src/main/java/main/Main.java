@@ -5,6 +5,7 @@ import IO.IOManager;
 import Math.Mathematics;
 import domain.WavFile;
 import IO.IOManager;
+import Steganography.EHEncoding;
 import static Steganography.EHEncoding.simpleEcho;
 import java.io.IOException;
 import Steganography.LSBEncoder;
@@ -55,9 +56,17 @@ public class Main {
             WavFile toDelay = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
             byte[] s = simpleEcho(toDelay.getChannelByNumber(1));
             toDelay.setChannelByNumber(1, s);
-            //IOManager.writeBytesToFile(big.toSaveableByteArray(), "encoded-test-44kHz.wav");
             IOManager.writeBytesToFile(toDelay.toSaveableByteArray(), "delaytest.wav");
 
+            WavFile toAlternateEcho = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
+            byte[] messageToHide = new byte[15];
+            for (int i = 0; i < messageToHide.length; i++) {
+                messageToHide[i] = 105;
+                System.out.print(messageToHide[i]);
+            }
+            byte[] t = EHEncoding.encode(toAlternateEcho.getChannelByNumber(1), messageToHide);
+            toAlternateEcho.setChannelByNumber(1, t);
+            IOManager.writeBytesToFile(toAlternateEcho.toSaveableByteArray(), "alternatingechotest.wav");
         } catch (IOException e) {
             System.out.println(e);
         }

@@ -24,6 +24,18 @@ public class Mathematics {
         }
         return -number;
     }
+    
+    /**
+     * Returns the absolute value of a double.
+     * @param number
+     * @return Absolute value of the parameter.
+     */
+    public static double abs(double number) {
+        if (number >= 0) {
+            return number;
+        }
+        return -number;
+    }
 
     /**
      * Returns the nth power of two in byte range (i.e. 1-8). For indexing, 0 is
