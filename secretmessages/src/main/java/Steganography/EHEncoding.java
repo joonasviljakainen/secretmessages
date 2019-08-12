@@ -19,6 +19,7 @@ public class EHEncoding {
     private static final double oneDelay = 1000.0;
     private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;
     private static final double DEFAULT_ECHO_AMPLITUDE = 0.5;
+    private static final short SIGNAL_LIMIT_MAGNITUDE = 32760;
 
     public static int[] encode(int[] data, char[] message) {
         int maxLength = data.length / DEFAULT_FRAME_LENGTH;
@@ -76,8 +77,22 @@ public class EHEncoding {
             res[i] = data[i];
         }
         for (int i = delayAsFrames, a = 0; i < data.length; i++, a++) {
-            //int sampleToDelay = data[a]; // e.g. at position 0
+            // Range checks to prevent overflow (overflow -> distortion, and 
+            // obviously we want the echo to be as unnoticeable as possible)
+            double echo = decay * data[a];
+            if (data[i] > 0 && echo > 0) {
+                if (SIGNAL_LIMIT_MAGNITUDE - echo < data[i]) {
+                    res[i] = SIGNAL_LIMIT_MAGNITUDE;
+                    continue;
+                }
+            } else if (data[i] < 0 && echo < 0) {
+                if (-SIGNAL_LIMIT_MAGNITUDE - echo > data[i]) {
+                    res[i] = -SIGNAL_LIMIT_MAGNITUDE;
+                    continue;
+                }
+            }
             res[i] = (short) (data[i] + (decay * data[a]));
+
         }
 
         return res;
