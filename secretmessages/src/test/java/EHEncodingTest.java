@@ -16,6 +16,8 @@ import IO.IOManager;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+
+import static Steganography.EHEncoding.delay;
 import static org.junit.Assert.*;
 import java.util.Random;
 
@@ -78,11 +80,28 @@ public class EHEncodingTest {
             assertEquals(delayed[i], 0);
         }
         for (int i = delayFrames, a = 0; i < test.length; i++, a++) {
-
+            assertEquals(delayed[i], test[a]);
         }
+    }
 
+    @Test
+    public void tinySignalEchoedAppropriately() {
+        short[] test = {260, -260};
+        short[] echoed = delay(test, 1, 1.0);
+        assertEquals(0, echoed[1]);
+    }
 
+    @Test
+    public void signalEchoValuesLimited() {
+        short[] test = {32000, -32000, 32000, -32000};
+        short[] echoed = delay(test, 2, 1.0);
+        assertEquals(32760, echoed[2]);
+        assertEquals(-32760, echoed[3]);
+    }
 
+    @Test
+    public void echoMagnitudeAdjustedAccordingToProvidedValue() {
+        // todo
     }
 
 }
