@@ -24,7 +24,7 @@ public class BitManipulation {
      */
     public static int getNthBitFromByte(byte source, int n) {
         if (n < 0 || n > 7) {
-            throw new Error("Number " + n + " is outside of range 0-7!");
+            throw new IllegalArgumentException("Number " + n + " is outside of range 0-7!");
         }
         return (powerOfTwo(n) & source) >>> n;
     }

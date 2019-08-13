@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import static org.junit.Assert.*;
+import java.util.Random;
 
 /**
  *
@@ -83,7 +84,6 @@ public class LSBEncoderTest {
         byte[] extracted1 = LSBEncoder.extractMessageFromBytes(test1, 4);
         byte[] extracted2 = LSBEncoder.extractMessageFromBytes(test2, 4);
         for (int i = 0; i < arr1.length; i++) {
-            System.out.println(i);
             assertEquals(arr1[i], (char) extracted1[i]);
         }
         for (int i = 0; i < arr2.length; i++) {

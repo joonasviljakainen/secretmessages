@@ -18,7 +18,7 @@ public class EHEncoding {
 
     private static final double zeroDelay = 150.0;
     //private static final double oneDelay = 300.0;
-    private static final double oneDelay = 250.0;
+    private static final double oneDelay = 2500.0;
     private static final int DEFAULT_FRAME_LENGTH = 8 * 4024;
     private static final double DEFAULT_ECHO_AMPLITUDE = 0.5;
     private static final short SIGNAL_LIMIT_MAGNITUDE = 32760;

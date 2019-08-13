@@ -1,12 +1,9 @@
 
 import Steganography.LSBEncoder;
+
+import static Utilities.BitManipulation.*;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static Utilities.BitManipulation.getNthBitFromByte;
-import static Utilities.BitManipulation.extractFinalBitFromByte;
-import static Utilities.BitManipulation.interleaveBitToByte;
-import static Utilities.BitManipulation.littleEndianBytesToShort;
-import static Utilities.BitManipulation.shortToLittleEndianBytes;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -88,6 +85,12 @@ public class BitUtilitiesTest {
         assertEquals(0, test6);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void nthBitExtractionRequiresCorrectBoundaries() {
+        int b1 = getNthBitFromByte((byte)8, 0);
+        int b2 = getNthBitFromByte((byte) 8, 8);
+    }
+
     @Test
     public void bytesToShortConversionMakesSense() {
         byte small1 = 8;
@@ -143,6 +146,26 @@ public class BitUtilitiesTest {
         byte[] test2 = shortToLittleEndianBytes(s);
         assertEquals(test2[0], -127);
         assertEquals(test2[1], 50 );
+    }
+
+    @Test
+    public void arrayOfBytesTurnedToShorts() {
+        byte[] test = {-127, 50, -127, 50};
+        short[] s = littleEndianByteArrayToShorts(test);
+        for (int i = 0; i < s.length; i++) {
+            assertEquals(s[i], 12929);
+        }
+    }
+
+    @Test
+    public void shortArrayTurnedToLittleEndianBytes() {
+        short[] s = {12929, 12929};
+        byte[] test = shortArrayToLittleEndianBytes(s);
+
+        for (int i = 0; i < test.length; i += 2) {
+            assertEquals(test[i], -127);
+            assertEquals(test[i + 1], 50);
+        }
     }
     
 }
