@@ -7,8 +7,8 @@ package Steganography;
 
 import Math.Mathematics;
 import Utilities.BitManipulation;
-import static Utilities.BitManipulation.littleEndianBytesToShort;
-import static Utilities.BitManipulation.shortToLittleEndianBytes;
+import static Utilities.BitManipulation.littleEndianByteArrayToShorts;
+import static Utilities.BitManipulation.shortArrayToLittleEndianBytes;
 
 /**
  *
@@ -91,7 +91,6 @@ public class EHEncoding {
                 for (int a = 0; a < numFramesForSingleBit && loc < res.length; a++, loc++) {
                     // TODO lerp this
                     res[loc] = curBit;
-
                 }
             }
         }
@@ -125,7 +124,7 @@ public class EHEncoding {
      * @param delayAsFrames Number of frames to delay. E.g. if samples rate is
      * 44100 per second, giving the value 44100 will create a delay of one
      * second.
-     * @param decay Magnitude i.e. volue of the echo compared to the original
+     * @param decay Magnitude i.e. volume of the echo compared to the original. 1.0 stands for equal volume.
      * signal.
      * @return
      */
@@ -150,31 +149,6 @@ public class EHEncoding {
                 }
             }
             res[i] = (short) (data[i] + echo);
-
-        }
-
-        return res;
-
-    }
-
-    public static short[] littleEndianByteArrayToShorts(byte[] source) {
-        short[] toDelay = new short[source.length / 2];
-        int cur;
-        for (int i = 0; i < toDelay.length; i++) {
-            cur = i * 2;
-            toDelay[i] = littleEndianBytesToShort(source[cur], source[cur + 1]);
-        }
-        return toDelay;
-    }
-
-    public static byte[] shortArrayToLittleEndianBytes(short[] src) {
-        byte[] res = new byte[src.length * 2];
-        int cur;
-        for (int i = 0; i < src.length; i++) {
-            cur = 2 * i;
-            byte[] ll = shortToLittleEndianBytes(src[i]);
-            res[cur] = ll[0];
-            res[cur + 1] = ll[1];
         }
         return res;
     }

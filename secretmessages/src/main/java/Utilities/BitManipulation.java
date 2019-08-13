@@ -77,7 +77,8 @@ public class BitManipulation {
     }
 
     /**
-     *  Converts a single short to two bytes, ordered in little-endian fashion.
+     * Converts a single short to two bytes, ordered in little-endian fashion.
+     *
      * @param num
      * @return
      */
@@ -85,6 +86,42 @@ public class BitManipulation {
         byte[] res = new byte[2];
         res[1] = (byte) (num >>> 8);
         res[0] = (byte) (num & 255);
+        return res;
+    }
+
+    /**
+     * Converts an array of bytes comprising little-endian pairs to 16-bit
+     * signed integers.
+     *
+     * @param source 16-bit PCM data (byte array with little-endian byte pairs
+     * @return 16-bit signed integers representing the PCM data.
+     */
+    public static short[] littleEndianByteArrayToShorts(byte[] source) {
+        short[] toDelay = new short[source.length / 2];
+        int cur;
+        for (int i = 0; i < toDelay.length; i++) {
+            cur = i * 2;
+            toDelay[i] = littleEndianBytesToShort(source[cur], source[cur + 1]);
+        }
+        return toDelay;
+    }
+
+    /**
+     * Converts an array of shorts (16-bit PCM samples) to a byte array with
+     * little-endian arrangement.
+     *
+     * @param src 16-bit integers to convert
+     * @return 16-bit PCM data as little-endian bytes
+     */
+    public static byte[] shortArrayToLittleEndianBytes(short[] src) {
+        byte[] res = new byte[src.length * 2];
+        int cur;
+        for (int i = 0; i < src.length; i++) {
+            cur = 2 * i;
+            byte[] ll = shortToLittleEndianBytes(src[i]);
+            res[cur] = ll[0];
+            res[cur + 1] = ll[1];
+        }
         return res;
     }
 }
