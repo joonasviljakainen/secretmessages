@@ -22,13 +22,14 @@ This project will target Microsoft WAV files, as they are a simple starting poin
 - [Design document](/documentation/design.md)
 - [Testing document](/documentation/testing.md)
 - [Hour reporting](/documentation/hours.md)
-
+- [Sample on echo hiding](/secretmessages/alternatingechotest.wav)
 
 ## Weekly reports
 
 - [Weekly report #1](/documentation/report1.md)
 - [Weekly report #2](/documentation/report2.md)
 - [Weekly report #3](/documentation/report3.md)
+- [Weekly report #4](/documentation/report4.md)
 
 
 
