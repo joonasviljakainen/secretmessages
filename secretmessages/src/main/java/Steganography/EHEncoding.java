@@ -25,15 +25,29 @@ public class EHEncoding {
     private static final short SIGNAL_LIMIT_MAGNITUDE = 32760;
 
     /**
-     * Encodes a message to an audio signal using Echo Hiding (EH).
+     * Encodes a message to an audio signal using Echo Hiding (EH). Uses default parameters.
      *
      * @param data The signal to which the message will be encoded. The data
      * must be 16-bit PCM format. Input data can be a raw byte stream: this
      * method will convert the data to 16-bit signed integers for encoding.
      * @param message The message to hide as bytes. Only 8-bit (ASCII) symbols are supported.
-     * @return
+     * @return Steganographically encoded audio
      */
     public static byte[] encode(byte[] data, byte[] message) {
+        return encode(data, message, 150.0, 2500.0,0.5, 44100);
+    }
+
+
+    /**
+     * Encodes a watermark to an audio file using Echo Hiding technique.
+     * @param data little-endian, single-channel byte data representing 16-bit PCM audio
+     * @param message the message to hide. Must be 8-bit value.
+     * @param zeroDelayAsMs Length of the delay for bit zero
+     * @param oneDelayAsMs Length of the delay for bit one
+     * @param decay The magnitude i.e. loudness of the echo used for hiding the data.
+     * @return The steganographically encoded audio
+     */
+    public static byte[] encode(byte[] data, byte[] message, double zeroDelayAsMs, double oneDelayAsMs, double decay, int samplingRate) {
         // TODO add support for 16kHx and 8 kHz sampling rates
         // convert to something we can handle
         short[] pcmData = littleEndianByteArrayToShorts(data);
@@ -44,19 +58,28 @@ public class EHEncoding {
             throw new IllegalArgumentException("Message too long to hide!");
         }
 
-        int zeroDelayAsNumberOfFrames = (int) (44100 * (zeroDelay / 1000.0)); // assuming 44100 Hz
-        int oneDelayAsNumberOfFrames = (int) (44100 * (oneDelay / 1000.0)); //; -- || --
+        int zeroDelayAsNumberOfFrames = (int) (samplingRate * (zeroDelayAsMs / 1000.0)); // assuming 44100 Hz
+        int oneDelayAsNumberOfFrames = (int) (samplingRate * (oneDelayAsMs / 1000.0)); //; -- || --
 
         short[] d0 = delaySignal(pcmData, zeroDelayAsNumberOfFrames);
         short[] d1 = delaySignal(pcmData, oneDelayAsNumberOfFrames);
 
         double[] mixer = createMixerSignal(message, pcmData.length, DEFAULT_FRAME_LENGTH);
-        short[] temp = convolveThreeSignals(pcmData, d0, d1, mixer, 0.5);
+        short[] temp = convolveThreeSignals(pcmData, d0, d1, mixer, decay);
 
         return shortArrayToLittleEndianBytes(temp);
     }
 
-    private static short[] convolveThreeSignals(short[] data, short[] zeroDelayed, short[] oneDelayed, double[] mixer, double decay) {
+    /**
+     * Convolves i.e. combines three signals so that the audio is a combination of the three.
+     * @param data The cover audio to convolve to.
+     * @param zeroDelayed The audio signal delayed by d0, i.e. the zero delay.
+     * @param oneDelayed Audio signal delayed by d1.
+     * @param mixer The mixer signal is used for selecting between the two delayed signals, depending on the bit being encoded.
+     * @param decay The magnitude of the convolved signals, i.e. how loud the echo should be.
+     * @return The convolved audio with encoded bits inside.
+     */
+    public static short[] convolveThreeSignals(short[] data, short[] zeroDelayed, short[] oneDelayed, double[] mixer, double decay) {
         for (int i = 0; i < mixer.length; i++) {
             //calculating the magnitude of the total echo
             short echo = (short) ((decay * zeroDelayed[i] * (Mathematics.abs(mixer[i] - 1))) + (decay * oneDelayed[i] * mixer[i]));
@@ -92,7 +115,7 @@ public class EHEncoding {
      * particular bit (essentially, how long the signal for each bit should be)
      * @return The mixer signal with values varying from 0.0 to 1.0.
      */
-    private static double[] createMixerSignal(byte[] message, int messageContainerLengthInFrames, int numFramesForSingleBit) {
+    public static double[] createMixerSignal(byte[] message, int messageContainerLengthInFrames, int numFramesForSingleBit) {
         double[] res = new double[messageContainerLengthInFrames];
 
         int loc = 0;

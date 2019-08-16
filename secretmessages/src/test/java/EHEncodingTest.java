@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
-import static Steganography.EHEncoding.delay;
+import static Steganography.EHEncoding.*;
 import static org.junit.Assert.*;
 import java.util.Random;
 
@@ -66,7 +66,7 @@ public class EHEncodingTest {
 
 
     @Test
-    public void signaldelayedappropriately() {
+    public void signalDelayedAppropriately() {
         short[] test = new short[100];
         int delayFrames = 21;
         Random r = new Random();
@@ -101,8 +101,86 @@ public class EHEncodingTest {
 
     @Test
     public void echoMagnitudeAdjustedAccordingToProvidedValue() {
-        // todo
+        short[] test = {500, -500, 20000, -12345, 0, 0, 0, 0};
+        short[] delayed = delay(test, 4, 0.5);
+        assertEquals(delayed[4], 250);
+        assertEquals(delayed[5], -250);
+        assertEquals(delayed[6], 10000);
+        assertEquals(delayed[7], -12345 / 2);
+
     }
 
+
+    @Test
+    public void simpleEchoTurnsOutFine() {
+        byte[] testCoverData = new byte[88200 * 4];
+        Random r = new Random(222);
+        for (int i = 0; i < testCoverData.length/2; i++) {
+            testCoverData[i] = (byte) r.nextInt();
+        }
+        for (int i = testCoverData.length/2; i < testCoverData.length; i++) {
+            testCoverData[i] = 0;
+        }
+
+        byte[] echoed = simpleEcho(testCoverData);
+
+        for(int i = testCoverData.length / 2, a = 0; i < testCoverData.length; i+=2, a+=2) {
+            assertEquals(Utilities.BitManipulation.littleEndianBytesToShort((testCoverData[a]), testCoverData[a + 1]) / 2,
+                    Utilities.BitManipulation.littleEndianBytesToShort(echoed[i], echoed [i + 1]));
+        }
+    }
+
+    @Test
+    public void signalConvolutionGeneratesRationalData() {
+        int testDataLength = 2000;
+        Random r = new Random(1338);
+        int zeroDelay = 50;
+        int oneDelay = 150;
+        short[] testData = new short[testDataLength];
+        short[] emptyTestData = new short[testDataLength];
+        double[] mixer = new double[testDataLength];
+
+        for (int i = 0; i < testData.length; i++ ){
+            testData[i] = (short) r.nextInt();
+            emptyTestData[i] = 0;
+            mixer[i] = i % 2;
+        }
+
+        short[] d0 = delaySignal(testData, zeroDelay);
+        short[] d1 = delaySignal(testData, oneDelay);
+
+        short[] convolved = EHEncoding.convolveThreeSignals(emptyTestData, d0, d1, mixer, 1.0);
+
+        for (int i = 0; i < convolved.length; i++) {
+            if (mixer[i] == 1.0) {
+                assertEquals(d1[i], convolved[i]);
+            } else {
+                assertEquals(d0[i], convolved[i]);
+            }
+        }
+    }
+/*
+    @Test
+    public void mixerSignalCreatedProperly() {
+        byte[] mes = {105, 105}; // i, i
+        int messageContainerLength = 32;
+        int numFramesForBit = 2;
+        double[] mixer = EHEncoding.createMixerSignal(mes, messageContainerLength, numFramesForBit);
+        for (double d: mixer) {
+            System.out.println(d);
+        }
+        int counter = 0;
+        for (int i = 0; i < mes.length; i++) {
+        byte cur = mes[i];
+            for (int j = 0; j < 8; j++) {
+                int curBit = Utilities.BitManipulation.getNthBitFromByte(cur, j);
+                for (int a = 0; a < numFramesForBit; a++) {
+                    assertEquals((int)mixer[counter], curBit);
+                    i++;
+                }
+            }
+
+        }
+    }*/
 }
 
