@@ -52,8 +52,8 @@ Subtotal for 3 weeks: 27h
 | 12.8.2019 | 3,5h | Implemented checks for overflows - now adding the echo should not cause distortion to the audio signal. Implemented a vaying echo! All we need is a nice smooth mixer signal to help. |
 | 13.8.2019 | 2,5 | Work on tests. IDE apocalypse forced me to work on another IDE - which is painful. |
 | 14.8.2019 | 0.5h | Thinking about tests |
-| 16.8.2019 |  | Tests |
-| __Total__ | h |  |
+| 16.8.2019 | 1,5h | Tests, documentation. |
+| __Total__ | h | 15h |
 
 Subtotal for 4 weeks: 
 

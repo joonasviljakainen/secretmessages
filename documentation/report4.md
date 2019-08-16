@@ -16,7 +16,6 @@ Implemented echo hiding. Pretty nifty, but I have one weakness - I need to test 
 
 Time management and testing. I can come up with tests, and I'm fairly sure they test approximately what they should test, but I'm having a hard time coming up with high-quality testing ideas.
 
-
 ## Next steps
 
 - Steganalysis allowing the detection and  decoding of echo hiding messages
