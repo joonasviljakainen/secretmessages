@@ -8,7 +8,9 @@ Secret Messages will be a java program that can be run from the command line. It
 
 __Least-Significant Bit encoding__ will be used for hiding the messages. 
 
-I will implement a second algorithm for comparison (e.g. __Echo Hiding__, or something simpler).
+I am working on a second algorithm for comparison: __Echo Hiding__. Currently, it can be used for encoding messages, but the extraction of messages has not been done yet.
+
+For an illustration on what echo hiding does, listen to my [example file](/secretmessages/alternatingechotest.wav) (the effect is highly exaggerated to make the point).
 
 
 ### Time & space complexities
