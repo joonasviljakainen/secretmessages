@@ -51,6 +51,8 @@ Subtotal for 3 weeks: 27h
 | 11.8.2019 | 3h | Implemented a simple echo function. The values still need to be normalized i.e. I need to create overflow checks. |
 | 12.8.2019 | 3,5h | Implemented checks for overflows - now adding the echo should not cause distortion to the audio signal. Implemented a vaying echo! All we need is a nice smooth mixer signal to help. |
 | 13.8.2019 | 2,5 | Work on tests. IDE apocalypse forced me to work on another IDE - which is painful. |
+| 14.8.2019 | 0.5h | Thinking about tests |
+| 16.8.2019 |  | Tests |
 | __Total__ | h |  |
 
 Subtotal for 4 weeks: 
