@@ -19,9 +19,9 @@ public class Main {
             WavFile big = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
             char[] test = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
-            Long i = System.currentTimeMillis();
+            Long lo = System.currentTimeMillis();
             byte[] bigTestEncoded = LSBEncoder.interleaveMessageInBytes(big.getAudioData(), test, 4);
-            System.out.println("LSB Encoded message in " + (System.currentTimeMillis() - i) + "ms");
+            System.out.println("LSB Encoded message in " + (System.currentTimeMillis() - lo) + "ms");
 
             big.setAudioData(bigTestEncoded);
             byte[] mes = LSBEncoder.extractMessageFromBytes(bigTestEncoded, 4);
@@ -50,14 +50,23 @@ public class Main {
             WavFile toAlternateEcho = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
             byte[] messageToHide = new byte[15];
 
+            for (int i = 0; i < messageToHide.length; i++) {
+                //messageToHide[i] = (byte)'i';
+                //messageToHide[i] = 0;
+                messageToHide[i] = (byte) 0xFF;
+            }
+
             Long start = System.currentTimeMillis();
 
             byte[] t = EHEncoding.encode(toAlternateEcho.getChannelByNumber(1), messageToHide);
-
             System.out.println("EH Encoded message in " + (System.currentTimeMillis() - start) + "ms");
-            
+
+            long startDecoding = System.currentTimeMillis();
+            Steganography.EHDecoding.decode(t);
+            System.out.println("EH Decoded message in " + (System.currentTimeMillis() - startDecoding) + "ms");
+
             toAlternateEcho.setChannelByNumber(1, t);
-            IOManager.writeBytesToFile(toAlternateEcho.toSaveableByteArray(), "alternatingechotest.wav");
+            IOManager.writeBytesToFile(toAlternateEcho.toSaveableByteArray(), "echoHidingRealFile.wav");
         } catch (IOException e) {
             System.out.println(e);
         }

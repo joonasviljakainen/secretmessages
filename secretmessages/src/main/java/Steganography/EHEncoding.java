@@ -17,11 +17,10 @@ import static Utilities.BitManipulation.shortArrayToLittleEndianBytes;
 public class EHEncoding {
 
     private static final double zeroDelay = 150.0;
-    //private static final double oneDelay = 300.0;
-    private static final double oneDelay = 2500.0;
-    private static final int DEFAULT_FRAME_LENGTH = 8 * 4024;
+    private static final double oneDelay = 350.0;
+    private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;
     //private static final int DEFAULT_FRAME_LENGTH = 8 * 1024; --> Use this in real life
-    private static final double DEFAULT_ECHO_AMPLITUDE = 0.5;
+    private static final double DEFAULT_ECHO_AMPLITUDE = 0.7;
     private static final short SIGNAL_LIMIT_MAGNITUDE = 32760;
 
     /**
@@ -34,7 +33,7 @@ public class EHEncoding {
      * @return Steganographically encoded audio
      */
     public static byte[] encode(byte[] data, byte[] message) {
-        return encode(data, message, 150.0, 2500.0,0.5, 44100);
+        return encode(data, message, 150.0, 2000.0,1.0, 44100);
     }
 
 
@@ -58,8 +57,11 @@ public class EHEncoding {
             throw new IllegalArgumentException("Message too long to hide!");
         }
 
-        int zeroDelayAsNumberOfFrames = (int) (samplingRate * (zeroDelayAsMs / 1000.0)); // assuming 44100 Hz
-        int oneDelayAsNumberOfFrames = (int) (samplingRate * (oneDelayAsMs / 1000.0)); //; -- || --
+        //int zeroDelayAsNumberOfFrames = (int) (samplingRate * (zeroDelayAsMs / 1000.0)); // assuming 44100 Hz
+        //int oneDelayAsNumberOfFrames = (int) (samplingRate * (oneDelayAsMs / 1000.0)); //; -- || --
+
+        int zeroDelayAsNumberOfFrames = 150;
+        int oneDelayAsNumberOfFrames = 200;
 
         short[] d0 = delaySignal(pcmData, zeroDelayAsNumberOfFrames);
         short[] d1 = delaySignal(pcmData, oneDelayAsNumberOfFrames);

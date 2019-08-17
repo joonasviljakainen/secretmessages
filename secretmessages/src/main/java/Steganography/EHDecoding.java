@@ -5,10 +5,113 @@
  */
 package Steganography;
 
+//import org.jtransforms.fft.FloatFFT_1D;
+//import org.jtransforms.fft.DoubleFFT_1D;
+import org.jtransforms.fft.DoubleFFT_1D;
+//import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
+
+
+//    org.jtransforms.fft.DoubleFFT_1D
+
+
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  *
  * @author joonas
  */
 public class EHDecoding {
-    
+
+    private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;
+    private static final double zeroDelay = 150.0;
+    private static final double oneDelay = 200.0;
+
+
+    public static byte[] decode(byte[] data) {
+        int d0 = (int) (zeroDelay / 1000 * 44100);
+        int d1 = (int) (oneDelay / 1000 * 44100);
+        return decode(data, d0, d1, DEFAULT_FRAME_LENGTH);
+    }
+
+    /**
+     *
+     * @param data
+     * @param zeroDelay
+     * @param oneDelay
+     * @param segmentLength
+     * @return
+     */
+    public static byte[] decode(byte[] data, int zeroDelayAsFrames, int oneDelayAsFrames, int segmentLength) {
+
+        short[] dataAsShorts = Utilities.BitManipulation.littleEndianByteArrayToShorts(data);
+        List<short[]> segments = new ArrayList<>();
+        int numberOfSegments = dataAsShorts.length/segmentLength;
+
+        // Dividing the audio into segments
+        for (int i = 0; i < numberOfSegments; i++) {
+            short[] segment = new short[segmentLength];
+            for (int j = 0, a = i * segmentLength; j < segmentLength; a++, j++ ) {
+                segment[j] = dataAsShorts[a];
+            }
+            segments.add(segment);
+        }
+
+        int d0 = 150;
+        int d1 = 200;
+
+        int[] segBits = new int[segments.size()];
+        for (int i = 0; i < segments.size(); i++) {
+            double[] rceps = rceps(segments.get(i));
+            //	if (rceps(d0+1) >= rceps(d1+1))
+            /*int zeroCounter = 0;
+            for (int j = d0+1; j < d1 + 1; j++) {
+                if (rceps[j] >= rceps[d1 +1]) {
+                    zeroCounter++;
+                }
+            }
+
+            if (zeroCounter / 2 >= (d1 - d0) / 2) {
+                segBits[i] = 0;
+            } else {
+                segBits[i] = 1;
+            }*/
+
+
+            if (rceps[d0] >= rceps[d1]) {
+                segBits[i] = 0;
+            } else {
+                segBits[i] = 1;
+            }
+        }
+
+        for (int i = 0; i < segBits.length; i+= 8) {
+            for (int j = 0; j < 8 && i + j < segBits.length; j++) {
+                System.out.print(segBits[j + i]);
+            }
+            System.out.println();
+        }
+
+        System.out.println();
+        return new byte[1];
+    }
+
+    private static double[] rceps(short[] data) {
+        // 	rceps = ifft(log(abs(fft(xsig(:,k)))));  %Real cepstrum
+        double[] rceps = new double[data.length];
+        for (int i = 0; i < data.length; i++) {
+            rceps[i] = data[i];
+        }
+
+        //public void realForward(float[] a)
+        //FloatFFT_1D f = new FloatFFT_1D(data.length);
+        DoubleFFT_1D f = new DoubleFFT_1D(data.length);
+        f.realForward(rceps);
+        for(int i = 0; i < rceps.length; i++) {
+            rceps[i] = Math.abs(rceps[i]);
+            rceps[i] = Math.log(rceps[i]);
+        }
+        f.realInverse(rceps, false);
+        return rceps;
+    }
 }
