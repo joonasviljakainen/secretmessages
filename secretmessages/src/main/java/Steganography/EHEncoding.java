@@ -18,8 +18,9 @@ public class EHEncoding {
 
     private static final double zeroDelay = 150.0;
     private static final double oneDelay = 350.0;
-    private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;
-    //private static final int DEFAULT_FRAME_LENGTH = 8 * 1024; --> Use this in real life
+    //private static final int DEFAULT_FRAME_LENGTH = 8 * 512;
+    //private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;  //--> Use this in real life
+    private static final int DEFAULT_FRAME_LENGTH = 8 * 2048;
     private static final double DEFAULT_ECHO_AMPLITUDE = 0.7;
     private static final short SIGNAL_LIMIT_MAGNITUDE = 32760;
 
@@ -61,7 +62,7 @@ public class EHEncoding {
         //int oneDelayAsNumberOfFrames = (int) (samplingRate * (oneDelayAsMs / 1000.0)); //; -- || --
 
         int zeroDelayAsNumberOfFrames = 150;
-        int oneDelayAsNumberOfFrames = 200;
+        int oneDelayAsNumberOfFrames = 300;
 
         short[] d0 = delaySignal(pcmData, zeroDelayAsNumberOfFrames);
         short[] d1 = delaySignal(pcmData, oneDelayAsNumberOfFrames);

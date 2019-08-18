@@ -23,7 +23,9 @@ import java.util.ArrayList;
  */
 public class EHDecoding {
 
-    private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;
+    //private static final int DEFAULT_FRAME_LENGTH = 8 * 512;
+    //private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;
+    private static final int DEFAULT_FRAME_LENGTH = 8 * 2048;
     private static final double zeroDelay = 150.0;
     private static final double oneDelay = 200.0;
 
@@ -58,27 +60,15 @@ public class EHDecoding {
         }
 
         int d0 = 150;
-        int d1 = 200;
+        int d1 = 300;
 
         int[] segBits = new int[segments.size()];
         for (int i = 0; i < segments.size(); i++) {
             double[] rceps = rceps(segments.get(i));
             //	if (rceps(d0+1) >= rceps(d1+1))
-            /*int zeroCounter = 0;
-            for (int j = d0+1; j < d1 + 1; j++) {
-                if (rceps[j] >= rceps[d1 +1]) {
-                    zeroCounter++;
-                }
-            }
-
-            if (zeroCounter / 2 >= (d1 - d0) / 2) {
-                segBits[i] = 0;
-            } else {
-                segBits[i] = 1;
-            }*/
-
-
-            if (rceps[d0] >= rceps[d1]) {
+            if (rceps[d0] >= rceps[d1]) { // THIS WORKS - kind of
+            //if (rceps[d0 - 1] >= rceps[d1 - 1 ]) { // THIS TOO
+            //if (rceps[d0 - 1] > rceps[d1 - 1 ] && rceps[d0] > rceps[d1]) { // THIS TOO
                 segBits[i] = 0;
             } else {
                 segBits[i] = 1;
@@ -86,12 +76,16 @@ public class EHDecoding {
         }
 
         for (int i = 0; i < segBits.length; i+= 8) {
+            int cur = 0x00;
             for (int j = 0; j < 8 && i + j < segBits.length; j++) {
                 System.out.print(segBits[j + i]);
+                byte bitpos = (byte) (segBits[j + i] << j);
+                cur  = (byte) (cur | bitpos);
             }
+            //System.out.print(" " + Integer.toBinaryString(cur));
+            System.out.print(" " + (char)(cur));
             System.out.println();
         }
-
         System.out.println();
         return new byte[1];
     }
