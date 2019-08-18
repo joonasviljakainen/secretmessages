@@ -60,6 +60,11 @@ Subtotal for 4 weeks:
 
 ## Week 5
 
+| Date | Time spent | Description |
+|-|-|-|
+| 17.8.2019 | 2h | Work on cepstrum analysis|
+| 18.8.2019 | 3h | Further work on cepstrum analysis and echo hiding data extraction. For the most part, I have been successful. |
+
 ## Week 6
 
 ## Week 7

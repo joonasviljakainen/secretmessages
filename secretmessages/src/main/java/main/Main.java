@@ -104,6 +104,11 @@ public class Main {
 
             toAlternateEcho.setChannelByNumber(1, t);
             IOManager.writeBytesToFile(toAlternateEcho.toSaveableByteArray(), "echoHidingRealFile.wav");
+
+
+            WavFile smoothStuff = new WavFile(IOManager.readFileToBytes("./echoHidingRealFile.wav"));
+            byte[] stuf = smoothStuff.getChannelByNumber(1);
+            Steganography.EHDecoding.decode(stuf);
         } catch (IOException e) {
             System.out.println(e);
         }
