@@ -6,6 +6,7 @@ A project for TiraLabra.
 
 The aim of this project is to hide data/messages in audio files. 
 
+
 ### Algorithms
  
  __Least-Significant Bit__ encoding will be used in one form or other.
@@ -24,12 +25,23 @@ This project will target Microsoft WAV files, as they are a simple starting poin
 - [Hour reporting](/documentation/hours.md)
 - [Sample on echo hiding](/secretmessages/alternatingechotest.wav)
 
+### Using the project
+
+To run the (super crappy) UI:
+
+1. clone the project
+2. navigate to the root directory with POM.xml and punch in `mvn javafx:run`
+
+If you select the file `echoHidingRealFile.wav`, you'll see my super secred encoded message.
+
 ## Weekly reports
 
 - [Weekly report #1](/documentation/report1.md)
 - [Weekly report #2](/documentation/report2.md)
 - [Weekly report #3](/documentation/report3.md)
 - [Weekly report #4](/documentation/report4.md)
+
+01101001
 
 
 
