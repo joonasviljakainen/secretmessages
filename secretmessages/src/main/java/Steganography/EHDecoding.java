@@ -74,7 +74,7 @@ public class EHDecoding {
                 segBits[i] = 1;
             }
         }
-
+        byte[] result = new byte[segBits.length];
         for (int i = 0; i < segBits.length; i+= 8) {
             int cur = 0x00;
             for (int j = 0; j < 8 && i + j < segBits.length; j++) {
@@ -83,11 +83,12 @@ public class EHDecoding {
                 cur  = (byte) (cur | bitpos);
             }
             //System.out.print(" " + Integer.toBinaryString(cur));
+            result[i] = (byte) cur;
             System.out.print(" " + (char)(cur));
             System.out.println();
         }
         System.out.println();
-        return new byte[1];
+        return result;
     }
 
     private static double[] rceps(short[] data) {
