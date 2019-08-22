@@ -16,12 +16,12 @@ import static Utilities.BitManipulation.shortArrayToLittleEndianBytes;
  */
 public class EHEncoding {
 
-    private static final double zeroDelay = 150.0;
-    private static final double oneDelay = 350.0;
+    //private static final double zeroDelay = 150.0;
+    //private static final double oneDelay = 350.0;
     //private static final int DEFAULT_FRAME_LENGTH = 8 * 512;
     //private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;  //--> Use this in real life
     private static final int DEFAULT_FRAME_LENGTH = 8 * 2048;
-    private static final double DEFAULT_ECHO_AMPLITUDE = 0.7;
+    //private static final double DEFAULT_ECHO_AMPLITUDE = 0.7;
     private static final short SIGNAL_LIMIT_MAGNITUDE = 32760;
 
     /**
@@ -34,7 +34,7 @@ public class EHEncoding {
      * @return Steganographically encoded audio
      */
     public static byte[] encode(byte[] data, byte[] message) {
-        return encode(data, message, 150.0, 2000.0,1.0, 44100);
+        return encode(data, message, 150, 300, 1.0);
     }
 
 
@@ -47,7 +47,7 @@ public class EHEncoding {
      * @param decay The magnitude i.e. loudness of the echo used for hiding the data.
      * @return The steganographically encoded audio
      */
-    public static byte[] encode(byte[] data, byte[] message, double zeroDelayAsMs, double oneDelayAsMs, double decay, int samplingRate) {
+    public static byte[] encode(byte[] data, byte[] message, int zeroDelay, int oneDelay, double decay) {
         // TODO add support for 16kHx and 8 kHz sampling rates
         // convert to something we can handle
         short[] pcmData = littleEndianByteArrayToShorts(data);
@@ -58,14 +58,8 @@ public class EHEncoding {
             throw new IllegalArgumentException("Message too long to hide!");
         }
 
-        //int zeroDelayAsNumberOfFrames = (int) (samplingRate * (zeroDelayAsMs / 1000.0)); // assuming 44100 Hz
-        //int oneDelayAsNumberOfFrames = (int) (samplingRate * (oneDelayAsMs / 1000.0)); //; -- || --
-
-        int zeroDelayAsNumberOfFrames = 150;
-        int oneDelayAsNumberOfFrames = 300;
-
-        short[] d0 = delaySignal(pcmData, zeroDelayAsNumberOfFrames);
-        short[] d1 = delaySignal(pcmData, oneDelayAsNumberOfFrames);
+        short[] d0 = delaySignal(pcmData, zeroDelay);
+        short[] d1 = delaySignal(pcmData, oneDelay);
 
         double[] mixer = createMixerSignal(message, pcmData.length, DEFAULT_FRAME_LENGTH);
         short[] temp = convolveThreeSignals(pcmData, d0, d1, mixer, decay);

@@ -26,14 +26,12 @@ public class EHDecoding {
     //private static final int DEFAULT_FRAME_LENGTH = 8 * 512;
     //private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;
     private static final int DEFAULT_FRAME_LENGTH = 8 * 2048;
-    private static final double zeroDelay = 150.0;
-    private static final double oneDelay = 200.0;
+    private static final int zeroDelay = 150;
+    private static final int oneDelay = 300;
 
 
     public static byte[] decode(byte[] data) {
-        int d0 = (int) (zeroDelay / 1000 * 44100);
-        int d1 = (int) (oneDelay / 1000 * 44100);
-        return decode(data, d0, d1, DEFAULT_FRAME_LENGTH);
+        return decode(data, zeroDelay, oneDelay, DEFAULT_FRAME_LENGTH);
     }
 
     /**
@@ -59,14 +57,16 @@ public class EHDecoding {
             segments.add(segment);
         }
 
-        int d0 = 150;
-        int d1 = 300;
+        //int d0 = 150;
+        //int d1 = 300;
+
+        int d0 = zeroDelayAsFrames;
+        int d1 = oneDelayAsFrames;
 
         int[] segBits = new int[segments.size()];
         for (int i = 0; i < segments.size(); i++) {
             double[] rceps = rceps(segments.get(i));
-            //	if (rceps(d0+1) >= rceps(d1+1))
-            if (rceps[d0] >= rceps[d1]) { // THIS WORKS - kind of
+            if (rceps[d0] >= rceps[d1]) {
             //if (rceps[d0 - 1] >= rceps[d1 - 1 ]) { // THIS TOO
             //if (rceps[d0 - 1] > rceps[d1 - 1 ] && rceps[d0] > rceps[d1]) { // THIS TOO
                 segBits[i] = 0;
@@ -98,8 +98,6 @@ public class EHDecoding {
             rceps[i] = data[i];
         }
 
-        //public void realForward(float[] a)
-        //FloatFFT_1D f = new FloatFFT_1D(data.length);
         DoubleFFT_1D f = new DoubleFFT_1D(data.length);
         f.realForward(rceps);
         for(int i = 0; i < rceps.length; i++) {

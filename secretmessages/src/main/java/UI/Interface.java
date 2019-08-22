@@ -5,7 +5,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.geometry.Insets;
+import javafx.scene.layout.*;
+import javafx.scene.control.*;
 import javafx.geometry.Pos;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -15,6 +19,10 @@ import javafx.stage.Stage;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import java.io.File;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -26,13 +34,35 @@ import Steganography.EHEncoding;
 import Steganography.EHDecoding;
 import domain.WavFile;
 import IO.IOManager;
+import main.java.domain.SecretMessages;
+
 import java.util.List;
 
 
 public class Interface extends Application {
 
     private Desktop desktop = Desktop.getDesktop();
-    private WavFile wavFile;
+    private String[] algorithms = {"Least-Significant Bit", "Echo Hiding"};
+
+
+    private Stage mainStage;
+
+    private SecretMessages stegWorker;
+
+    private Scene main;
+    private Scene ehScene;
+    private Scene lsbScene;
+
+    private Button toMain;
+    private Button toMain2;
+    private Button toEH;
+    private Button toLSB;
+    Button fileButton;
+
+    FileChooser f;
+
+    private String messageToEncode;
+    private byte[] decodedMessage;
 
 
     public static void main(String[] args) {
@@ -42,104 +72,168 @@ public class Interface extends Application {
 
     @Override
     public void start(Stage stage) {
-/*
-        GridPane mainGridPane = new GridPane();
-        mainGridPane.setMinSize(700, 900);
-        mainGridPane.setPadding(new Insets(10, 10, 10, 10));
 
-        mainGridPane.setVgap(5);
-        mainGridPane.setHgap(5);
-        mainGridPane.setAlignment(Pos.CENTER);
+        stegWorker = new SecretMessages();
 
-        FileChooser f = new FileChooser();
+        mainStage = stage;
+
+        toMain = toPlaceButton(0, "To Main Menu");
+        toMain2 = toPlaceButton(0, "To Main Menu");
+        toEH = toPlaceButton(2, "To Echo Hiding");
+        toLSB = toPlaceButton(1, "To Least-Significant Bit ");
+
+        f = new FileChooser();
         f.setTitle("Select audio file to encode");
-
-        Group root = new Group();
-        ObservableList list = root.getChildren();
-        list.add(mainGridPane);
-        list.add(f);
-
-        Scene s = new Scene(root, 600, 700);
-        primaryStage.setTitle("Audio Steganography!");
-        primaryStage.setScene(s);
-        primaryStage.show();
-
-*/
-
-        //text
-        Text text = new Text();
-        text.setFont(new Font(45));
-        text.setX(50);
-        text.setY(150);
-        text.setText("Welcome to Steganography!");
-
-        Group root = new Group();
-
-        ObservableList list = root.getChildren();
-        list.add(text);
-
-        // File chooser
-        FileChooser f = new FileChooser();
-        f.setTitle("Select audio file to encode");
-        final Button encodeButton = new Button("Select an audio file for encoding");
-        encodeButton.setOnAction(
+        fileButton = new Button("Select an audio file for encoding");
+        fileButton.setOnAction(
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(final ActionEvent e) {
                         File file = f.showOpenDialog(stage);
                         if (file != null) {
-                            openFileForEncoding(file);
+                            openFile(file);
                         }
                     }
                 });
-        list.add(encodeButton);
 
-        FileChooser f2 = new FileChooser();
-        f.setTitle("Select audio file to encode");
-        final Button decodeButton = new Button("Select an audio file for decoding");
-        decodeButton.setOnAction(
-                new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        File file = f.showOpenDialog(stage);
-                        if (file != null) {
-                            openFileForDecoding(file);
-                        }
-                    }
-                });
-        list.add(decodeButton);
+        main = mainScene(toEH, toLSB);
+        ehScene = ehscene(toMain2);
+        lsbScene = lsbscene(toMain);
 
         //Creating a scene object
-        Scene scene = new Scene(root, 600, 300);
-        stage.setTitle("Sample Application");
-        stage.setScene(scene);
+        stage.setTitle("Steganography");
+        stage.setScene(main);
 
         stage.show();
 
     }
 
-    private void openFileForEncoding(File file) {
-        try {
-            //desktop.open(file);
-            wavFile = new WavFile(IOManager.readFileToBytes(file.getPath()));
-            System.out.println("WAVFILE INITIALIZED FOR ENCODING");
-        } catch (IOException ex) {
-            System.out.println("VOIHAN RIPULI");
-        }
+    private void openFile(File file) {
+            stegWorker.setWavfile((file.getPath()), file.getName());
+            // TODO UPDATE VIEWS
     }
 
-    private void openFileForDecoding(File file) {
-        try {
-            //desktop.open(file);
-            wavFile = new WavFile(IOManager.readFileToBytes(file.getPath()));
-            System.out.println("WAVFILE INITIALIZED FOR DECODING");
-            byte[] result = EHDecoding.decode(wavFile.getChannelByNumber(1));
-            System.out.println("DECODED");
-            for ( int i = 0 ; i < result.length; i++) {
-                System.out.print((char)(result[i]));
-            }
-        } catch (IOException ex) {
-            System.out.println("VOIHAN RIPULI");
-        }
+    private Pane echoHidingPane() {
+        Pane p = new Pane();
+        Text t = new Text();
+        t.setText("Echo Hiding");
+        t.setY(50);
+        t.setX(50);
+        p.getChildren().addAll(t, openFileButton(), encodeButton(), decodeButton());
+        return p;
+    }
+
+    private Pane lsbPane() {
+        Pane p = new Pane();
+        Text t = new Text();
+        t.setText("Least-Significant Bit");
+        t.setY(50);
+        t.setX(50);
+        p.getChildren().addAll(t, openFileButton(), encodeButton(), decodeButton());
+        return p;
+    }
+
+    private Scene ehscene(Button returnButton) {
+        Pane p = new Pane();
+        p.getChildren().addAll(echoHidingPane(), returnButton);
+        Scene s = new Scene(p, 600, 300);
+        return s;
+    }
+
+    private Scene lsbscene(Button returnButton) {
+        Pane p = new Pane();
+        p.getChildren().addAll(lsbPane(), returnButton);
+        Scene s = new Scene(p, 600, 300);
+        return s;
+    }
+
+    private Scene mainScene(Button b1, Button b2) {
+        Pane p = new Pane();
+        p.getChildren().addAll(b1, b2);
+        Scene s = new Scene(p, 600, 300);
+        return s;
+    }
+
+    private Button toPlaceButton(int i, String text) {
+        Button b = new Button(text);
+        b.setLayoutX(i * 200);
+        b.setLayoutY(10);
+        b.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        System.out.println(text);
+                        switch (i){
+                            case 0:
+                                mainStage.setScene(main);
+                                break;
+                            case 1:
+                                mainStage.setScene(lsbScene);
+                                stegWorker.setAlg(0);
+                                break;
+                            default:
+                                mainStage.setScene(ehScene);
+                                stegWorker.setAlg(1);
+                        }
+                    }
+                });
+        return b;
+    }
+
+    private Button openFileButton() {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Select audio file to encode");
+        Button ofButton = new Button("Select an audio file for encoding");
+        ofButton.setLayoutY(200);
+        ofButton.setLayoutX(10);
+        ofButton.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        File file = fc.showOpenDialog(mainStage);
+                        if (file != null) {
+                            openFile(file);
+                        }
+                    }
+                });
+        return ofButton;
+    }
+
+    private Button encodeButton() {
+        Button b = new Button("Encode");
+        b.setLayoutY(240);
+        b.setLayoutX(10);
+        b.setOnAction(
+                new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        System.out.println(stegWorker.getAlg());
+                        stegWorker.encode("testingtestingtesting");
+                    }
+        });
+
+        return b;
+    }
+
+    private Button decodeButton() {
+        Button b = new Button("Decode");
+        b.setLayoutY(260);
+        b.setLayoutX(10);
+        b.setOnAction(
+                new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        decodedMessage = stegWorker.decode();
+                        if (decodedMessage == null) {
+                            System.out.println("Voi hemmetti");
+                            return;
+                        }
+                        for (int i = 0; i < decodedMessage.length; i++) {
+                            System.out.print((char)decodedMessage[i]);
+                        }
+                    }
+                });
+
+        return b;
     }
 }
