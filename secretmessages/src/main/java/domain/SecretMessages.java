@@ -91,13 +91,11 @@ public class SecretMessages {
         // TODO string to bytes
         if (this.alg == 1) {
             System.out.println("ENCODING...");
-            /*Steganography.EHEncoding.encode(wavFile.getChannelByNumber(this.channelNum),
+            byte[] data = Steganography.EHEncoding.encode(wavFile.getChannelByNumber(this.channelNum),
                     messageAsBytes,
                     this.zeroDelay,
                     this.oneDelay,
-                    DEFAULT_ECHO_AMPLITUDE,
-                    44100);*/
-            byte[] data = Steganography.EHEncoding.encode(wavFile.getChannelByNumber(this.channelNum), messageAsBytes);
+                    DEFAULT_ECHO_AMPLITUDE);
             wavFile.setChannelByNumber(this.channelNum, data);
         } else {
             System.out.println("NOT ENCODING...");
@@ -108,12 +106,11 @@ public class SecretMessages {
     public byte[] decode() {
         try {
         if (this.alg == 1) {
-            /*byte[] b = Steganography.EHDecoding.decode(
+            byte[] b = Steganography.EHDecoding.decode(
                     wavFile.getChannelByNumber(this.channelNum),
                     this.zeroDelay,
                     this.oneDelay,
-                    this.frameLength);*/
-            byte[] b = Steganography.EHDecoding.decode(wavFile.getChannelByNumber(this.channelNum));
+                    this.frameLength);
             return b;
         } else {
             System.out.println("no error, just bumming out");
