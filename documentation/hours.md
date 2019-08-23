@@ -45,6 +45,8 @@ Subtotal for 3 weeks: 27h
 
 ## Week 4
 
+[Weekly report #4](/documentation/report4.md)
+
 | Date | Time spent | Description |
 |-|-|-|
 | 10.8.2019 | 2h | Converting shorts to little-endian bytes. Work on creating my first echoes. |
@@ -53,12 +55,14 @@ Subtotal for 3 weeks: 27h
 | 13.8.2019 | 2,5 | Work on tests. IDE apocalypse forced me to work on another IDE - which is painful. |
 | 14.8.2019 | 0.5h | Thinking about tests |
 | 16.8.2019 | 1,5h | Tests, documentation. |
-| __Total__ | h | 15h |
+| __Total__ | 15h | |
 
-Subtotal for 4 weeks: 
+Subtotal for 4 weeks: 42h
 
 
 ## Week 5
+
+[Weekly report #5](/documentation/report5.md)
 
 | Date | Time spent | Description |
 |-|-|-|
@@ -67,6 +71,9 @@ Subtotal for 4 weeks:
 | 20.8.2019 | 3h | Almost had a meltdown over JavaFX BS. I had to switch to Oracle's JDK. There's a super simple UI that can only be used for decoding at the moment. |
 | 22.8.2019 | 4h | Threw away the UI and started over. Created a business logic class that should work to simplify the interactions between the UI and the algorithmic work. |
 | 23.8.2019 | 5h | Tests, minor refactoring. Peer review. POM updates so as to create a more accurate test report. |
+| __Total__ |  17h |  |
+
+Subtotal for 5 weeks: 59h
 
 ## Week 6
 
