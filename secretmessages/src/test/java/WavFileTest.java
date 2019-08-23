@@ -116,4 +116,31 @@ public class WavFileTest {
         }
     }
 
+    @Test
+    public void settingChannelByNumberWorks() {
+            WavFile w = new WavFile(smallTestFile);
+            byte[] firstChannelData = w.getChannelByNumber(1);
+            byte[] fillerData  = new byte[firstChannelData.length];
+
+            for (int i = 0; i < fillerData.length; i++) {
+                fillerData[i] = (byte) (126 / fillerData.length);
+            }
+
+            w.setChannelByNumber(1, fillerData);
+            byte[] testData = w.getChannelByNumber(1);
+
+            assertEquals(fillerData.length, testData.length);
+            for (int i = 0; i < fillerData.length; i++ ){
+                assertEquals(fillerData[i], testData[i]);
+            }
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void channelNumberLimitationsWork() {
+        WavFile w = new WavFile(smallTestFile);
+        byte[] b1 = w.getChannelByNumber(3);
+        byte[] b2 = w.getChannelByNumber(0);
+    }
+
 }

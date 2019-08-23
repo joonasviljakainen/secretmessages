@@ -31,22 +31,11 @@
             <artifactId>JTransforms</artifactId>
             <version>2.4</version>
         </dependency>
-        <!--<dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>javafx</artifactId>
-            <version>2.2.3</version>
-        </dependency>-->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>12.0.2</version>
         </dependency>
-        <!--<dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx</artifactId>
-            <version>11</version>
-            <type>pom</type>
-        </dependency>-->
     </dependencies>
     <build>
         <plugins>
@@ -81,6 +70,13 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*Interface**</exclude>
+                        <exclude>**/*IO*</exclude>
+                        <exclude>**/*Main.*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
@@ -118,7 +114,7 @@
                 <configuration>
                     <mainClass>main.java.UI.Interface</mainClass>
                 </configuration>
-</plugin>
+            </plugin>
         </plugins>
     </build>
 

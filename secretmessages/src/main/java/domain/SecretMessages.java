@@ -48,10 +48,18 @@ public class SecretMessages {
         return this.zeroDelay;
     }
 
+    /**
+     * Sets the currently selected channel number.
+     * @param channelNum
+     */
     public void setChannel(int channelNum) {
         this.channelNum = channelNum;
     }
 
+    /**
+     * returns the number of the currently selected channel.
+     * @return
+     */
     public int getChannelNum() {
         return this.channelNum;
     }
@@ -90,7 +98,6 @@ public class SecretMessages {
         byte [] messageAsBytes = stringToBytes(message);
         // TODO string to bytes
         if (this.alg == 1) {
-            System.out.println("ENCODING...");
             byte[] data = Steganography.EHEncoding.encode(wavFile.getChannelByNumber(this.channelNum),
                     messageAsBytes,
                     this.zeroDelay,
@@ -98,7 +105,6 @@ public class SecretMessages {
                     DEFAULT_ECHO_AMPLITUDE);
             wavFile.setChannelByNumber(this.channelNum, data);
         } else {
-            System.out.println("NOT ENCODING...");
             // TODO LSB Encoding
         }
     }
@@ -123,14 +129,17 @@ public class SecretMessages {
         return null;
     }
 
-    private byte[] stringToBytes(String s) {
+
+    /**
+     * Converts a string to a byte array. Any non-ASCII values will be lost.
+     * @param s
+     * @return
+     */
+    public static byte[] stringToBytes(String s) {
         byte[] b = new byte[s.length()];
         for (int i = 0; i < b.length; i++) {
-
             b[i] = (byte) s.charAt(i);
-            System.out.println((char) b[i]);
         }
-
         return b;
     }
 }

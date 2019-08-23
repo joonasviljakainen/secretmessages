@@ -29,7 +29,6 @@ public class EHDecoding {
     private static final int zeroDelay = 150;
     private static final int oneDelay = 300;
 
-
     public static byte[] decode(byte[] data) {
         return decode(data, zeroDelay, oneDelay, DEFAULT_FRAME_LENGTH);
     }
@@ -57,9 +56,6 @@ public class EHDecoding {
             segments.add(segment);
         }
 
-        //int d0 = 150;
-        //int d1 = 300;
-
         int d0 = zeroDelayAsFrames;
         int d1 = oneDelayAsFrames;
 
@@ -67,27 +63,25 @@ public class EHDecoding {
         for (int i = 0; i < segments.size(); i++) {
             double[] rceps = rceps(segments.get(i));
             if (rceps[d0] >= rceps[d1]) {
-            //if (rceps[d0 - 1] >= rceps[d1 - 1 ]) { // THIS TOO
-            //if (rceps[d0 - 1] > rceps[d1 - 1 ] && rceps[d0] > rceps[d1]) { // THIS TOO
                 segBits[i] = 0;
             } else {
                 segBits[i] = 1;
             }
         }
         byte[] result = new byte[segBits.length];
+        int location = 0;
         for (int i = 0; i < segBits.length; i+= 8) {
             int cur = 0x00;
             for (int j = 0; j < 8 && i + j < segBits.length; j++) {
-                System.out.print(segBits[j + i]);
+                //System.out.print(segBits[j + i]);
                 byte bitpos = (byte) (segBits[j + i] << j);
                 cur  = (byte) (cur | bitpos);
             }
-            //System.out.print(" " + Integer.toBinaryString(cur));
-            result[i] = (byte) cur;
-            System.out.print(" " + (char)(cur));
-            System.out.println();
+            result[location++] = (byte) cur;
+            //System.out.print(" " + (char)(cur));
+            //System.out.println();
         }
-        System.out.println();
+        //System.out.println();
         return result;
     }
 
