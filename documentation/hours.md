@@ -62,10 +62,11 @@ Subtotal for 4 weeks:
 
 | Date | Time spent | Description |
 |-|-|-|
-| 17.8.2019 | 2h | Work on cepstrum analysis|
+| 17.8.2019 | 2h | Work on cepstrum analysis. |
 | 18.8.2019 | 3h | Further work on cepstrum analysis and echo hiding data extraction. For the most part, I have been successful. |
 | 20.8.2019 | 3h | Almost had a meltdown over JavaFX BS. I had to switch to Oracle's JDK. There's a super simple UI that can only be used for decoding at the moment. |
 | 22.8.2019 | 4h | Threw away the UI and started over. Created a business logic class that should work to simplify the interactions between the UI and the algorithmic work. |
+| 23.8.2019 | 5h | Tests, minor refactoring. Peer review. POM updates so as to create a more accurate test report. |
 
 ## Week 6
 
