@@ -25,14 +25,14 @@ public class LSBEncoder {
         int maxLength = target.length / blockLength;
         long messageLengthInBits = message.length * 8;
         if (target.length / blockLength < messageLengthInBits) {
-            throw new Error("Message has " + messageLengthInBits + " bits, but only " + maxLength + " bits can be fitted.");
+            throw new Error("Message has " + messageLengthInBits
+                    + " bits, but only " + maxLength + " bits can be fitted.");
         }
 
         int locationInByte = 0;                         // how many-th bit of the current byte is being looked at
         int locInMsg = 0;                               // how many-th byte of the message is being looked at
         int curBit;                                     // The current bit value to embed in the audio
         for (int i = 0; i < target.length; i += blockLength) {
-            //for (int i = 0; i < message.length * 8; i += blockLength) {
             curBit = getNthBitFromByte((byte) message[locInMsg], locationInByte); // the bit to embed
             int mask = 0xfe;                            // 11111110
             int temp = mask & target[i];                // ensure that last bit is 0
@@ -70,9 +70,8 @@ public class LSBEncoder {
             if (curBit == 1) {
                 byte bitpos = (byte) (curBit << locationInByte);
                 message[locInMsg] = (byte) (message[locInMsg] | bitpos);
-            } else {
-                //
             }
+
             if (++locationInByte >= 8) {
                 locationInByte = 0;
                 locInMsg++;

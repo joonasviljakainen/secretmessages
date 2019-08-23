@@ -114,11 +114,4 @@ public class Main {
         }
         return;
     }
-
-    public static byte abs(byte src) {
-        if (src < 0) {
-            return (byte) -src;
-        }
-        return src;
-    }
 }

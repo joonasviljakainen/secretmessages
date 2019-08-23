@@ -21,6 +21,7 @@ This project will target Microsoft WAV files, as they are a simple starting poin
 ## Documentation
 
 - [Design document](/documentation/design.md)
+- [Implementation document](/documentation/implementation.md)
 - [Testing document](/documentation/testing.md)
 - [Hour reporting](/documentation/hours.md)
 - [Sample on echo hiding](/secretmessages/alternatingechotest.wav)

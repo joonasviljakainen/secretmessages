@@ -5,15 +5,7 @@
  */
 package Steganography;
 
-//import org.jtransforms.fft.FloatFFT_1D;
-//import org.jtransforms.fft.DoubleFFT_1D;
 import org.jtransforms.fft.DoubleFFT_1D;
-//import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
-
-
-//    org.jtransforms.fft.DoubleFFT_1D
-
-
 import java.util.List;
 import java.util.ArrayList;
 
@@ -22,9 +14,7 @@ import java.util.ArrayList;
  * @author joonas
  */
 public class EHDecoding {
-
-    //private static final int DEFAULT_FRAME_LENGTH = 8 * 512;
-    //private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;
+    
     private static final int DEFAULT_FRAME_LENGTH = 8 * 2048;
     private static final int zeroDelay = 150;
     private static final int oneDelay = 300;
@@ -73,20 +63,15 @@ public class EHDecoding {
         for (int i = 0; i < segBits.length; i+= 8) {
             int cur = 0x00;
             for (int j = 0; j < 8 && i + j < segBits.length; j++) {
-                //System.out.print(segBits[j + i]);
                 byte bitpos = (byte) (segBits[j + i] << j);
                 cur  = (byte) (cur | bitpos);
             }
             result[location++] = (byte) cur;
-            //System.out.print(" " + (char)(cur));
-            //System.out.println();
         }
-        //System.out.println();
         return result;
     }
 
     private static double[] rceps(short[] data) {
-        // 	rceps = ifft(log(abs(fft(xsig(:,k)))));  %Real cepstrum
         double[] rceps = new double[data.length];
         for (int i = 0; i < data.length; i++) {
             rceps[i] = data[i];
