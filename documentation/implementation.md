@@ -1,5 +1,6 @@
 # Implementation document
 
+__NOTE__: I have NOT implemented Fourier transforms myself.
 
 ## Least-Significant Bit encoding
 
@@ -51,3 +52,11 @@ The project is a Maven project, consisting of the following classes:
 9: __Interface.java__: The UI of the application.
 10: __ArrayUtils.java__: Utilities for manipulating byte arrays.
 11: __BitManipulation.java__: Utilities for bit operations and byte to short conversions (and reverse).
+
+## IO
+
+We need to load and save files. All of this functionality has been encapsulated in IOManager.java.
+
+## UI
+
+There's a UI, but it's still WIP.
