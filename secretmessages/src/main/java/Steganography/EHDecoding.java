@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @author joonas
  */
 public class EHDecoding {
-    
+
     private static final int DEFAULT_FRAME_LENGTH = 8 * 2048;
     private static final int zeroDelay = 150;
     private static final int oneDelay = 300;

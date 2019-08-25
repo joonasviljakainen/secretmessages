@@ -32,6 +32,9 @@ public class LSBEncoderTest {
     WavFile smallUnencoded;
     WavFile smallEncoded;
 
+    byte[] messageArr1;
+    byte[] messageArr2;
+
     public LSBEncoderTest() throws IOException {
 
         URL url = Thread.currentThread().getContextClassLoader().getResource("./44kHz.wav");
@@ -59,7 +62,19 @@ public class LSBEncoderTest {
 
     @Before
     public void setUp() {
+        char[] a1 = "Hipsteribrunssi".toCharArray();
+        char[] a2 = "Kesabiisit".toCharArray();
 
+        messageArr1 = new byte[a1.length];
+        messageArr2 = new byte[a2.length];
+
+        for (int i = 0; i < a1.length; i++) {
+            messageArr1[i] = (byte) a1[i];
+        }
+
+        for (int i = 0; i < a2.length; i++) {
+            messageArr2[i] = (byte) a2[i];
+        }
     }
 
     @After
@@ -69,25 +84,23 @@ public class LSBEncoderTest {
 
     @Test
     public void messageHiddenWithoutCrashing() {
-        byte[] test1 = LSBEncoder.interleaveMessageInBytes(bigUnencoded.getAudioData(), "Hipsteribrunssi".toCharArray(), 4);
-        byte[] test2 = LSBEncoder.interleaveMessageInBytes(smallUnencoded.getAudioData(), "Kesabiisit".toCharArray(), 4);
+        byte[] test1 = LSBEncoder.interleaveMessageInBytes(bigUnencoded.getAudioData(), messageArr1, 4);
+        byte[] test2 = LSBEncoder.interleaveMessageInBytes(smallUnencoded.getAudioData(), messageArr2, 4);
     }
 
     @Test
     public void decoderCanDecodeHiddenMessage() {
-        char[] arr1 = "Hipsteribrunssi".toCharArray();
-        char[] arr2 = "Kesabiisit".toCharArray();
 
-        byte[] test1 = LSBEncoder.interleaveMessageInBytes(bigUnencoded.getAudioData(), arr1, 4);
-        byte[] test2 = LSBEncoder.interleaveMessageInBytes(smallUnencoded.getAudioData(), arr2, 4);
+        byte[] test1 = LSBEncoder.interleaveMessageInBytes(bigUnencoded.getAudioData(), messageArr1, 4);
+        byte[] test2 = LSBEncoder.interleaveMessageInBytes(smallUnencoded.getAudioData(), messageArr2, 4);
 
         byte[] extracted1 = LSBEncoder.extractMessageFromBytes(test1, 4);
         byte[] extracted2 = LSBEncoder.extractMessageFromBytes(test2, 4);
-        for (int i = 0; i < arr1.length; i++) {
-            assertEquals(arr1[i], (char) extracted1[i]);
+        for (int i = 0; i < messageArr1.length; i++) {
+            assertEquals(messageArr1[i], (char) extracted1[i]);
         }
-        for (int i = 0; i < arr2.length; i++) {
-            assertEquals(arr2[i], (char) extracted2[i]);
+        for (int i = 0; i < messageArr2.length; i++) {
+            assertEquals(messageArr2[i], (char) extracted2[i]);
         }
     }
 
@@ -101,7 +114,12 @@ public class LSBEncoderTest {
                 + "\n"
                 + "In the program code given below, the corresponding bits of both operands are 1 and 0, hence we get 1 as output because the bits are different. ";
         char[] arr = text.toCharArray();
-        byte[] test2 = LSBEncoder.interleaveMessageInBytes(smallUnencoded.getAudioData(), arr, 4);
+        byte[] messageAsBytes = new byte[arr.length];
+
+        for (int i = 0; i < messageAsBytes.length; i++) {
+            messageAsBytes[i] = (byte) arr[i];
+        }
+        byte[] test2 = LSBEncoder.interleaveMessageInBytes(smallUnencoded.getAudioData(), messageAsBytes, 4);
         byte[] decoded = LSBEncoder.extractMessageFromBytes(test2, 4);
         for (int i = 0; i < text.length(); i++) {
             assertEquals(arr[i], (char) decoded[i]);

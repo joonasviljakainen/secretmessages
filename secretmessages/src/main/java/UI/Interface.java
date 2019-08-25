@@ -24,6 +24,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import java.io.File;
+import javafx.scene.control.TextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -53,16 +54,27 @@ public class Interface extends Application {
     private Scene ehScene;
     private Scene lsbScene;
 
+
     private Button toMain;
     private Button toMain2;
     private Button toEH;
     private Button toLSB;
     Button fileButton;
 
+    private TextArea messageEntryField;
+    private TextArea decodedMessageDisplay;
+
     FileChooser f;
 
     private String messageToEncode;
     private byte[] decodedMessage;
+
+    private Text fileName;
+    private Text fileName2;
+    private Text messageMaxSize;
+    private Text messageMaxSize2;
+    private Text numberOfChannels;
+    private Text numberOfChannel2;
 
 
     public static void main(String[] args) {
@@ -81,6 +93,25 @@ public class Interface extends Application {
         toMain2 = toPlaceButton(0, "To Main Menu");
         toEH = toPlaceButton(2, "To Echo Hiding");
         toLSB = toPlaceButton(1, "To Least-Significant Bit ");
+
+        int height = 100;
+        int width = 250;
+        messageEntryField = new TextArea();
+        messageEntryField.setPrefHeight(height);
+        messageEntryField.setPrefWidth(width);
+        messageEntryField.setText("Message to hide");
+        messageEntryField.setLayoutX(20);
+        messageEntryField.setLayoutY(60);
+
+        decodedMessageDisplay = new TextArea();
+        decodedMessageDisplay.setPrefHeight(height);
+        decodedMessageDisplay.setPrefWidth(width);
+        decodedMessageDisplay.setEditable(false);
+        decodedMessageDisplay.setText("The decoded message");
+        decodedMessageDisplay.setLayoutX(300);
+        decodedMessageDisplay.setLayoutY(60);
+
+        initFileInfo();
 
         f = new FileChooser();
         f.setTitle("Select audio file to encode");
@@ -109,8 +140,9 @@ public class Interface extends Application {
     }
 
     private void openFile(File file) {
-            stegWorker.setWavfile((file.getPath()), file.getName());
-            // TODO UPDATE VIEWS
+        stegWorker.setWavfile((file.getPath()), file.getName());
+        updateFileInfo();
+        // TODO UPDATE VIEWS
     }
 
     private Pane echoHidingPane() {
@@ -119,7 +151,13 @@ public class Interface extends Application {
         t.setText("Echo Hiding");
         t.setY(50);
         t.setX(50);
-        p.getChildren().addAll(t, openFileButton(), encodeButton(), decodeButton());
+        p.getChildren().addAll(
+                t,
+                openFileButton(),
+                encodeButton(),
+                decodeButton(),
+                messageEntryField,
+                decodedMessageDisplay);
         return p;
     }
 
@@ -129,28 +167,39 @@ public class Interface extends Application {
         t.setText("Least-Significant Bit");
         t.setY(50);
         t.setX(50);
-        p.getChildren().addAll(t, openFileButton(), encodeButton(), decodeButton());
+
+        // Message entry field
+
+
+
+        p.getChildren().addAll(
+                t,
+                openFileButton(),
+                encodeButton(),
+                decodeButton(),
+                messageEntryField,
+                decodedMessageDisplay);
         return p;
     }
 
     private Scene ehscene(Button returnButton) {
         Pane p = new Pane();
-        p.getChildren().addAll(echoHidingPane(), returnButton);
-        Scene s = new Scene(p, 600, 300);
+        p.getChildren().addAll(echoHidingPane(), returnButton, this.fileName2);
+        Scene s = new Scene(p, 600, 500);
         return s;
     }
 
     private Scene lsbscene(Button returnButton) {
         Pane p = new Pane();
-        p.getChildren().addAll(lsbPane(), returnButton);
-        Scene s = new Scene(p, 600, 300);
+        p.getChildren().addAll(lsbPane(), returnButton, this.fileName);
+        Scene s = new Scene(p, 600, 500);
         return s;
     }
 
     private Scene mainScene(Button b1, Button b2) {
         Pane p = new Pane();
-        p.getChildren().addAll(b1, b2);
-        Scene s = new Scene(p, 600, 300);
+        p.getChildren().addAll(b1, b2, this.fileName);
+        Scene s = new Scene(p, 600, 500);
         return s;
     }
 
@@ -162,7 +211,6 @@ public class Interface extends Application {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(final ActionEvent e) {
-                        System.out.println(text);
                         switch (i){
                             case 0:
                                 mainStage.setScene(main);
@@ -201,14 +249,16 @@ public class Interface extends Application {
 
     private Button encodeButton() {
         Button b = new Button("Encode");
-        b.setLayoutY(240);
+        b.setLayoutY(350);
         b.setLayoutX(10);
         b.setOnAction(
                 new EventHandler<ActionEvent>(){
                     @Override
                     public void handle(final ActionEvent e) {
-                        System.out.println(stegWorker.getAlg());
-                        stegWorker.encode("testingtestingtesting");
+                        // TODO test for length of message vs calculated max length
+                        //stegWorker.encode("testingtestingtesting");
+                        stegWorker.encode(messageEntryField.getText());
+                        System.out.println("DONE!");
                     }
         });
 
@@ -217,8 +267,8 @@ public class Interface extends Application {
 
     private Button decodeButton() {
         Button b = new Button("Decode");
-        b.setLayoutY(260);
-        b.setLayoutX(10);
+        b.setLayoutY(350);
+        b.setLayoutX(100);
         b.setOnAction(
                 new EventHandler<ActionEvent>(){
                     @Override
@@ -235,5 +285,29 @@ public class Interface extends Application {
                 });
 
         return b;
+    }
+
+    private void initFileInfo() {
+        if (this.fileName == null) {
+            this.fileName = new Text();
+            this.fileName.setLayoutY(240);
+            this.fileName.setLayoutX(20);
+
+            this.fileName2 = new Text();
+            this.fileName2.setLayoutY(240);
+            this.fileName2.setLayoutX(20);
+        }
+        if (!stegWorker.fileLoaded()) {
+            this.fileName.setText("Filename: No File Selected");
+            this.fileName2.setText("Filename: No File Selected");
+        } else {
+
+        }
+
+    }
+
+    private void updateFileInfo() {
+        this.fileName.setText("File name: " + stegWorker.getFileName());
+        this.fileName2.setText("File name: " + stegWorker.getFileName());
     }
 }

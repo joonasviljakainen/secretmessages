@@ -13,6 +13,8 @@ public class SecretMessages {
     private final int DEFAULT_ONE_DELAY = 300;
     private final double DEFAULT_ECHO_AMPLITUDE = 0.7;
 
+    private String fileName;
+
     private int samplingRate;
     private int frameLength = DEFAULT_FRAME_LENGTH;
     private int zeroDelay = DEFAULT_ZERO_DELAY;
@@ -30,10 +32,20 @@ public class SecretMessages {
     public void setWavfile(String path, String name) {
         try {
             wavFile = new domain.WavFile(IO.IOManager.readFileToBytes(path));
+            fileName = name;
             System.out.println("WAVFILE INITIALIZED FOR DECODING");
         } catch(IOException e) {
             System.out.println("THERE WAS AN ERROR INITIALIZING SHITE");
         }
+    }
+
+    public boolean fileLoaded() {
+        System.out.println("CHECKING FOR EXISTENCE OF WWAVFILE " + (this.wavFile != null));
+        return this.wavFile != null;
+    }
+
+    public String getFileName() {
+        return this.fileName;
     }
 
     public int getFrameLength() {
@@ -96,32 +108,39 @@ public class SecretMessages {
 
     public void encode(String message) {
         byte [] messageAsBytes = stringToBytes(message);
-        // TODO string to bytes
+        byte[] data;
         if (this.alg == 1) {
-            byte[] data = Steganography.EHEncoding.encode(wavFile.getChannelByNumber(this.channelNum),
+            data = Steganography.EHEncoding.encode(wavFile.getChannelByNumber(this.channelNum),
                     messageAsBytes,
                     this.zeroDelay,
                     this.oneDelay,
                     DEFAULT_ECHO_AMPLITUDE);
-            wavFile.setChannelByNumber(this.channelNum, data);
         } else {
+            data = Steganography.LSBEncoder.interleaveMessageInBytes(
+                    wavFile.getChannelByNumber(this.channelNum),
+                    messageAsBytes,
+                    2);
             // TODO LSB Encoding
         }
+        wavFile.setChannelByNumber(this.channelNum, data);
     }
 
     public byte[] decode() {
         try {
+            byte[] b;
         if (this.alg == 1) {
-            byte[] b = Steganography.EHDecoding.decode(
+            b = Steganography.EHDecoding.decode(
                     wavFile.getChannelByNumber(this.channelNum),
                     this.zeroDelay,
                     this.oneDelay,
                     this.frameLength);
-            return b;
+
         } else {
-            System.out.println("no error, just bumming out");
- // TODO LSB Decoding
+            b = Steganography.LSBEncoder.extractMessageFromBytes(
+                    wavFile.getChannelByNumber(this.channelNum),
+                    2);
         }
+            return b;
         } catch(Exception e) {
             System.out.println("ERROR");
             System.out.println(e);

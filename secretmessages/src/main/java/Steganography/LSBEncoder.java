@@ -21,7 +21,8 @@ public class LSBEncoder {
      * @param blockLength
      * @return
      */
-    public static byte[] interleaveMessageInBytes(byte[] target, char[] message, int blockLength) {
+//    public static byte[] interleaveMessageInBytes(byte[] target, char[] message, int blockLength) {
+    public static byte[] interleaveMessageInBytes(byte[] target, byte[] message, int blockLength) {
         int maxLength = target.length / blockLength;
         long messageLengthInBits = message.length * 8;
         if (target.length / blockLength < messageLengthInBits) {
@@ -33,7 +34,8 @@ public class LSBEncoder {
         int locInMsg = 0;                               // how many-th byte of the message is being looked at
         int curBit;                                     // The current bit value to embed in the audio
         for (int i = 0; i < target.length; i += blockLength) {
-            curBit = getNthBitFromByte((byte) message[locInMsg], locationInByte); // the bit to embed
+            //curBit = getNthBitFromByte((byte) message[locInMsg], locationInByte); // the bit to embed
+            curBit = getNthBitFromByte(message[locInMsg], locationInByte); // the bit to embed
             int mask = 0xfe;                            // 11111110
             int temp = mask & target[i];                // ensure that last bit is 0
             target[i] = (byte) (temp | curBit);         // Add last bit, whatever it may be

@@ -18,9 +18,13 @@ public class Main {
         try {
             WavFile big = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
             char[] test = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+            byte[] message = new byte[test.length];
+            for (int i = 0; i < test.length; i++) {
+                message[i] = (byte) test[i];
+            }
 
             Long lo = System.currentTimeMillis();
-            byte[] bigTestEncoded = LSBEncoder.interleaveMessageInBytes(big.getAudioData(), test, 4);
+            byte[] bigTestEncoded = LSBEncoder.interleaveMessageInBytes(big.getAudioData(), message, 4);
             System.out.println("LSB Encoded message in " + (System.currentTimeMillis() - lo) + "ms");
 
             big.setAudioData(bigTestEncoded);
@@ -31,7 +35,7 @@ public class Main {
 
 
             Long l = System.currentTimeMillis();
-            byte[] message = LSBEncoder.extractMessageFromBytes(toDecode.getAudioData(), 4);
+            byte[] extractedMessage = LSBEncoder.extractMessageFromBytes(toDecode.getAudioData(), 4);
             System.out.println("extracting BIG took " + (System.currentTimeMillis() - l) + "ms");
 /*
 
