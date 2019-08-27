@@ -76,5 +76,11 @@ Subtotal for 4 weeks: 42h
 Subtotal for 5 weeks: 59h
 
 ## Week 6
+| Date | Time spent | Description|
+|-|-|-|
+| 25.8.2019 | 1,5h | UI work |
+| 27.8.2019 | 3h | UI: plugging things in |
+||||
+| __Total__ |  ||
 
 ## Week 7

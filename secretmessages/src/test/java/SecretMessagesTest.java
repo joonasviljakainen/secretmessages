@@ -98,20 +98,20 @@ public class SecretMessagesTest {
     public void gettersAndSettersFunctionCorrectly() {
         int initd0 = s.getZeroDelay();
         int initd1 = s.getOneDelay();
-        int initframelength = s.getFrameLength();
+        int initSegmentlength = s.getSegmentLength();
 
         s.setZeroDelay(10);
         s.setOneDelay(200);
-        s.setFrameLength(2048);
+        s.setSegmentLength(2048);
 
         assertEquals(10, s.getZeroDelay());
         assertEquals(200, s.getOneDelay());
-        assertEquals(2048, s.getFrameLength());
+        assertEquals(2048, s.getSegmentLength());
 
         s.resetParameters();
 
         assertEquals(initd0, s.getZeroDelay());
         assertEquals(initd1, s.getOneDelay());
-        assertEquals(initframelength, s.getFrameLength());
+        assertEquals(initSegmentlength, s.getSegmentLength());
     }
 }

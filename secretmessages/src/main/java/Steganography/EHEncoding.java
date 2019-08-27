@@ -34,7 +34,7 @@ public class EHEncoding {
      * @return Steganographically encoded audio
      */
     public static byte[] encode(byte[] data, byte[] message) {
-        return encode(data, message, 150, 300, 1.0);
+        return encode(data, message, 150, 300, 1.0, DEFAULT_FRAME_LENGTH);
     }
 
 
@@ -47,7 +47,7 @@ public class EHEncoding {
      * @param decay The magnitude i.e. loudness of the echo used for hiding the data.
      * @return The steganographically encoded audio
      */
-    public static byte[] encode(byte[] data, byte[] message, int zeroDelay, int oneDelay, double decay) {
+    public static byte[] encode(byte[] data, byte[] message, int zeroDelay, int oneDelay, double decay, int segmentlength) {
         // TODO add support for 16kHx and 8 kHz sampling rates
         // convert to something we can handle
         short[] pcmData = littleEndianByteArrayToShorts(data);
@@ -61,7 +61,7 @@ public class EHEncoding {
         short[] d0 = delaySignal(pcmData, zeroDelay);
         short[] d1 = delaySignal(pcmData, oneDelay);
 
-        double[] mixer = createMixerSignal(message, pcmData.length, DEFAULT_FRAME_LENGTH);
+        double[] mixer = createMixerSignal(message, pcmData.length, segmentlength);
         short[] temp = convolveThreeSignals(pcmData, d0, d1, mixer, decay);
 
         return shortArrayToLittleEndianBytes(temp);
