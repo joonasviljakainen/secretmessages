@@ -64,10 +64,17 @@ public class Interface extends Application {
     private Button toLSB;
     Button fileButton;
 
+    private Button saveButton1;
+    private Button saveButton2;
+
     private TextArea messageEntryField;
     private TextArea messageEntryField2;
     private TextArea decodedMessageDisplay;
     private TextArea decodedMessageDisplay2;
+
+    private Text delayDescriptor;
+    private TextField d0Display;
+    private TextField d1Display;
 
     FileChooser f;
 
@@ -142,6 +149,8 @@ public class Interface extends Application {
 
         ehSegmentLengthChoiceBox = new ChoiceBox<>();
         setupSegmentLengthChoiceBox();
+        setupSaveButtons();
+        setupDelayControls();
 
         initFileInfo();
 
@@ -183,7 +192,7 @@ public class Interface extends Application {
         t.setY(50);
         t.setX(50);
         p.getChildren().addAll(t, openFileButton(), encodeButton(), decodeButton(), messageEntryField,
-                decodedMessageDisplay, ehMaxLengthDisplay, ehSegmentLengthChoiceBox);
+                decodedMessageDisplay, ehMaxLengthDisplay, ehSegmentLengthChoiceBox, saveButton1, delayDescriptor, d0Display, d1Display);
 
         if (this.stegWorker.fileLoaded()) {
             List<Integer> choices = new ArrayList<>();
@@ -209,7 +218,7 @@ public class Interface extends Application {
         // Message entry field
 
         p.getChildren().addAll(t, openFileButton(), encodeButton(), decodeButton(), messageEntryField2,
-                decodedMessageDisplay2, lsbMaxLengthDisplay);
+                decodedMessageDisplay2, lsbMaxLengthDisplay, saveButton2);
 
         if (this.stegWorker.fileLoaded()) {
             List<Integer> choices = new ArrayList<>();
@@ -411,5 +420,66 @@ public class Interface extends Application {
             cb2.setItems(o);
 
         }
+    }
+
+    public void setupSaveButtons() {
+        saveButton1 = new Button("Save as...");
+        saveButton2 = new Button("Save as...");
+
+        saveButton1.setLayoutX(20);
+        saveButton1.setLayoutY(400);
+        saveButton2.setLayoutX(20);
+        saveButton2.setLayoutY(400);
+
+        saveButton1.setOnAction(new EventHandler<ActionEvent>() {
+  
+            @Override
+            public void handle(ActionEvent event) {
+                FileChooser fileChooser = new FileChooser();
+    
+                //Set extension filter
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("WAV files (*.wav)", "*.wav");
+                fileChooser.getExtensionFilters().add(extFilter);
+                
+                //Show save file dialog
+                File file = fileChooser.showSaveDialog(mainStage);
+                byte[] bytes = stegWorker.getSaveableByteArray();
+                if(file != null && bytes != null){
+                    try {
+                    IOManager.writeBytesToFile(bytes, file.getName());
+                    } catch (Exception e) {
+                        System.out.println("ERRIR");
+                        System.out.println(e);
+                    }
+                    //SaveFile(Santa_Claus_Is_Coming_To_Town, file);
+                }
+            }
+        });
+    }
+
+    public void setupDelayControls() {
+        delayDescriptor = new Text("Delay lengths for echo hiding");
+        delayDescriptor.setLayoutX(230);
+        delayDescriptor.setLayoutY(350);
+
+        d0Display = new TextField();
+        d0Display.setMaxWidth(60);
+        d0Display.setLayoutX(230);
+        d0Display.setLayoutY(360);
+
+        d0Display.textProperty().addListener((observable, oldValue, newValue) -> {
+            Integer i = Integer.parseInt(newValue);
+            System.out.println("textfield changed from " + oldValue + " to " + newValue);
+        });
+
+        d1Display = new TextField();
+        d1Display.setMaxWidth(60);
+        d1Display.setLayoutX(300);
+        d1Display.setLayoutY(360);
+
+        d1Display.textProperty().addListener((observable, oldValue, newValue) -> {
+            Integer i = Integer.parseInt(newValue);
+            System.out.println("textfield changed from " + oldValue + " to " + newValue);
+        });
     }
 }
