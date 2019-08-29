@@ -62,4 +62,12 @@ public class Mathematics {
         return (byte) accum;
     }
 
+    public static double pow(double base, int exponent) {
+        double res = 1;
+        for (int i = 0; i < exponent; i++) {
+            res *= base;
+        }
+        return res;
+    }
+
 }

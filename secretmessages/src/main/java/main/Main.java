@@ -9,13 +9,19 @@ import Steganography.EHEncoding;
 import static Steganography.EHEncoding.simpleEcho;
 import java.io.IOException;
 import Steganography.LSBEncoder;
+import main.java.Math.NaturalLogarithm;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello world!");
+        NaturalLogarithm n = new NaturalLogarithm();
 
+/*
         try {
+            NaturalLogarithm n = new NaturalLogarithm();
+
+            /*
             WavFile big = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
             char[] test = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
             byte[] message = new byte[test.length];
@@ -46,7 +52,8 @@ public class Main {
 
             // ECHO HIDING
             // ___________
-            WavFile toDelay = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
+           
+           /* WavFile toDelay = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
             byte[] s = simpleEcho(toDelay.getChannelByNumber(1));
             toDelay.setChannelByNumber(1, s);
             IOManager.writeBytesToFile(toDelay.toSaveableByteArray(), "delaytest.wav");
@@ -78,7 +85,7 @@ public class Main {
             messageToHide[20] = (byte) 'i';
             messageToHide[21] = (byte) 'f';
             messageToHide[22] = (byte) 'y';
-            messageToHide[23] = (byte) '-';
+            messageToHide[23] = (byte) '-';*/
             /*
 
             messageToHide[24] = (byte) 's';
@@ -96,7 +103,7 @@ public class Main {
                 //messageToHide[i] = 0;
                 messageToHide[i] = (byte) 0xFF;
             } */
-
+/*
             Long start = System.currentTimeMillis();
 
             byte[] t = EHEncoding.encode(toAlternateEcho.getChannelByNumber(1), messageToHide);
@@ -112,10 +119,11 @@ public class Main {
 
             WavFile smoothStuff = new WavFile(IOManager.readFileToBytes("./echoHidingRealFile.wav"));
             byte[] stuf = smoothStuff.getChannelByNumber(1);
-            Steganography.EHDecoding.decode(stuf);
-        } catch (IOException e) {
+            Steganography.EHDecoding.decode(stuf);*/
+        
+        /*} catch (IOException e) {
             System.out.println(e);
-        }
+        }*/
         return;
     }
 }
