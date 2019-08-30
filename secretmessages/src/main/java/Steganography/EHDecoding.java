@@ -8,6 +8,8 @@ package Steganography;
 import org.jtransforms.fft.DoubleFFT_1D;
 import java.util.List;
 import java.util.ArrayList;
+import static Math.NaturalLogarithm.ln;
+import static Math.Mathematics.abs;
 
 /**
  *
@@ -80,8 +82,9 @@ public class EHDecoding {
         DoubleFFT_1D f = new DoubleFFT_1D(data.length);
         f.realForward(rceps);
         for(int i = 0; i < rceps.length; i++) {
-            rceps[i] = Math.abs(rceps[i]);
+            rceps[i] = abs(rceps[i]);
             rceps[i] = Math.log(rceps[i]);
+            //rceps[i] = ln(rceps[i]);
         }
         f.realInverse(rceps, false);
         return rceps;

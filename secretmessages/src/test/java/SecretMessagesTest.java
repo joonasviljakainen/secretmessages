@@ -68,7 +68,8 @@ public class SecretMessagesTest {
             assertEquals((byte) chars[i], decoded[i]);
         }
     }
-/* // TODO:  THIS SHOULD WORK ONCE I PLUG LSB IN
+    
+ // TODO:  THIS SHOULD WORK ONCE I PLUG LSB IN
     @Test
     public void leastSignificantBitWorks() {
         s.setAlg(0);
@@ -81,7 +82,7 @@ public class SecretMessagesTest {
         for (int i = 0; i < chars.length; i++) {
             assertEquals((byte) chars[i], decoded[i]);
         }
-    }*/
+    }
 
     @Test
     public void stringToBytesIsCorrect() {

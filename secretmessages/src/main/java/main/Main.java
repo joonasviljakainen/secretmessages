@@ -9,7 +9,7 @@ import Steganography.EHEncoding;
 import static Steganography.EHEncoding.simpleEcho;
 import java.io.IOException;
 import Steganography.LSBEncoder;
-import main.java.Math.NaturalLogarithm;
+import Math.NaturalLogarithm;
 
 public class Main {
 
@@ -17,9 +17,8 @@ public class Main {
         System.out.println("Hello world!");
         NaturalLogarithm n = new NaturalLogarithm();
 
-/*
+
         try {
-            NaturalLogarithm n = new NaturalLogarithm();
 
             /*
             WavFile big = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
@@ -43,7 +42,7 @@ public class Main {
             Long l = System.currentTimeMillis();
             byte[] extractedMessage = LSBEncoder.extractMessageFromBytes(toDecode.getAudioData(), 4);
             System.out.println("extracting BIG took " + (System.currentTimeMillis() - l) + "ms");
-/*
+
 
             char[] test2 ="HIPSTERIBRUNSSI ON MAHTAVAAAA".toCharArray();
             //char[] test2 = "TOOT TOOT TOOTSIE TOOTSIE".toCharArray();
@@ -53,7 +52,7 @@ public class Main {
             // ECHO HIDING
             // ___________
            
-           /* WavFile toDelay = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
+            WavFile toDelay = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
             byte[] s = simpleEcho(toDelay.getChannelByNumber(1));
             toDelay.setChannelByNumber(1, s);
             IOManager.writeBytesToFile(toDelay.toSaveableByteArray(), "delaytest.wav");
@@ -85,8 +84,8 @@ public class Main {
             messageToHide[20] = (byte) 'i';
             messageToHide[21] = (byte) 'f';
             messageToHide[22] = (byte) 'y';
-            messageToHide[23] = (byte) '-';*/
-            /*
+            messageToHide[23] = (byte) '-';
+            
 
             messageToHide[24] = (byte) 's';
             messageToHide[25] = (byte) 'p';
@@ -97,13 +96,14 @@ public class Main {
             messageToHide[30] = (byte) 'y';
             messageToHide[31] = (byte) '-';
 
-            /*for (int i = 0; i < messageToHide.length; i++) {
+            /*
+            for (int i = 0; i < messageToHide.length; i++) {
                 //messageToHide[i] = (byte)'i';
                 //messageToHide[i] = (byte)'a';
                 //messageToHide[i] = 0;
                 messageToHide[i] = (byte) 0xFF;
             } */
-/*
+
             Long start = System.currentTimeMillis();
 
             byte[] t = EHEncoding.encode(toAlternateEcho.getChannelByNumber(1), messageToHide);
@@ -119,11 +119,15 @@ public class Main {
 
             WavFile smoothStuff = new WavFile(IOManager.readFileToBytes("./echoHidingRealFile.wav"));
             byte[] stuf = smoothStuff.getChannelByNumber(1);
-            Steganography.EHDecoding.decode(stuf);*/
+            byte[] res = Steganography.EHDecoding.decode(stuf);
+
+            for (int i = 0; i < res.length; i++) {
+                System.out.print((char) res[i]);
+            }
         
-        /*} catch (IOException e) {
+        } catch (IOException e) {
             System.out.println(e);
-        }*/
+        }
         return;
     }
 }

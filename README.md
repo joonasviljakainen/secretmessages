@@ -42,3 +42,4 @@ If you select the file `echoHidingRealFile.wav`, you'll see my super secred enco
 - [Weekly report #3](/documentation/report3.md)
 - [Weekly report #4](/documentation/report4.md)
 - [Weekly report #5](/documentation/report5.md)
+- [Weekly report #6](/documentation/report6.md)
