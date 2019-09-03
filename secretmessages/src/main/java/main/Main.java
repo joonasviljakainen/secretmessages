@@ -9,13 +9,13 @@ import Steganography.EHEncoding;
 import static Steganography.EHEncoding.simpleEcho;
 import java.io.IOException;
 import Steganography.LSBEncoder;
-import Math.NaturalLogarithm;
+//import Math.NaturalLogarithm;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello world!");
-        NaturalLogarithm n = new NaturalLogarithm();
+        //NaturalLogarithm n = new NaturalLogarithm();
 
 
         try {

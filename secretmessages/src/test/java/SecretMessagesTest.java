@@ -114,5 +114,18 @@ public class SecretMessagesTest {
         assertEquals(initd0, s.getZeroDelay());
         assertEquals(initd1, s.getOneDelay());
         assertEquals(initSegmentlength, s.getSegmentLength());
+
+        assertEquals("44kHz.wav", s.getFileName());
+    }
+
+    @Test
+    public void miscellaneousTests() {
+        assertEquals(true, s.fileLoaded());
+        assertEquals((int) 2, (int) s.getNumberOfChannels());
+        assertEquals((int) 1, (int) s.getChannelNum());
+        s.setChannel(1);
+        assertEquals((int) 2, (int) s.getChannelNum());
+
+
     }
 }

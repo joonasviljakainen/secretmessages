@@ -8,7 +8,7 @@ package Steganography;
 import org.jtransforms.fft.DoubleFFT_1D;
 import java.util.List;
 import java.util.ArrayList;
-import static Math.NaturalLogarithm.ln;
+//import static Math.NaturalLogarithm.ln;
 import static Math.Mathematics.abs;
 
 /**
