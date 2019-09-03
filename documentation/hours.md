@@ -76,11 +76,17 @@ Subtotal for 4 weeks: 42h
 Subtotal for 5 weeks: 59h
 
 ## Week 6
+
+[Weekly report #6](/documentation/report6.md)
+
 | Date | Time spent | Description|
 |-|-|-|
 | 25.8.2019 | 1,5h | UI work |
 | 27.8.2019 | 3h | UI: plugging things in |
-||||
-| __Total__ |  ||
+| 28.8.2019 | 1h | UI work |
+| 29.8.2019 | 1,5h | Work on logarithms |
+| __Total__ | 7h ||
+
+Subtotal for 5 weeks: 66h
 
 ## Week 7
