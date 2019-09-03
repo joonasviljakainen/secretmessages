@@ -13,7 +13,7 @@ import javafx.scene.control.*;
 import javafx.geometry.Pos;
 import javafx.collections.FXCollections;
 import javafx.application.Application;
-import javafx.collections.ObservableList;;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -38,6 +38,7 @@ import Steganography.LSBEncoder;
 import Steganography.EHEncoding;
 import Steganography.EHDecoding;
 import domain.WavFile;
+import javafx.util.Duration;
 import IO.IOManager;
 import main.java.domain.SecretMessages;
 
@@ -383,7 +384,10 @@ public class Interface extends Application {
 
     private ChoiceBox createChoiceBox() {
         ChoiceBox c = new ChoiceBox<>();
-        c.setTooltip((new Tooltip("Select channel to decode. Typically, smaller is left, larger is right.")));
+        Tooltip t = new Tooltip("Select channel to decode. Typically, smaller is left, larger is right.");
+        t.setShowDelay(new Duration(10));
+        c.setTooltip((t));
+
         c.setMinWidth(50);
         c.setLayoutX(300);
         c.setLayoutY(300);
@@ -396,7 +400,11 @@ public class Interface extends Application {
     }
 
     private void setupSegmentLengthChoiceBox() {
-        ehSegmentLengthChoiceBox.setTooltip(new Tooltip("Select segment length for EH encoding and decoding"));
+
+        Tooltip t = new Tooltip("Segment length (number of samples pre each bit) for EH encoding and decoding");
+        t.setShowDelay(new Duration(10));
+        ehSegmentLengthChoiceBox.setTooltip(t);
+
         ObservableList o = FXCollections.observableArrayList(8 * 512, 8 * 1024, 8 * 2 * 1024, 8 * 3 * 1024);
         ehSegmentLengthChoiceBox.setItems(o);
         ehSegmentLengthChoiceBox.setLayoutX(250);
@@ -457,7 +465,7 @@ public class Interface extends Application {
     }
 
     public void setupDelayControls() {
-        delayDescriptor = new Text("Delay lengths (d0, d1):");
+        delayDescriptor = new Text("Number of samples to delay(for 0, for 1):");
         delayDescriptor.setLayoutX(230);
         delayDescriptor.setLayoutY(350);
 
