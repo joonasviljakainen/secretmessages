@@ -75,11 +75,11 @@ public class SecretMessages {
     /**
      * Calculates the maximum possible length of messages to be hidden when using 
      * Echo Hiding and the current set of parameters.
-     * @return 
+     * @return Max length of message as bytes.
      */
     public int getMaxLengthForEH() {
         return this.wavFile.getDataSize() / (this.wavFile.getBitsPerSample() / 8) / this.wavFile.getNumberOfChannels()
-                / this.segmentLength;
+                / this.segmentLength / 8;
     }
 
     public void encode(String message) {
@@ -102,6 +102,10 @@ public class SecretMessages {
             if (this.alg == 1) {
                 b = Steganography.EHDecoding.decode(wavFile.getChannelByNumber(this.channelNum), this.zeroDelay,
                         this.oneDelay, this.segmentLength);
+                System.out.println(b.length);
+                for (int i = 0; i < b.length; i++) {
+                    System.out.print(b[i]);
+                }
 
             } else {
                 b = Steganography.LSBEncoder.extractMessageFromBytes(wavFile.getChannelByNumber(this.channelNum), 2);

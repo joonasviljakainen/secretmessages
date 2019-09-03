@@ -377,8 +377,8 @@ public class Interface extends Application {
         this.fileName2.setText("File name: " + stegWorker.getFileName());
         updateChoiceBox();
 
-        ehMaxLengthDisplay.setText("Max Length: " + stegWorker.getMaxLengthForEH() + " bytes");
-        lsbMaxLengthDisplay.setText("Max Length: " + stegWorker.getMaxLengthForLSB() + " bytes");
+        ehMaxLengthDisplay.setText("Max Length: " + stegWorker.getMaxLengthForEH() + " bytes(characters)");
+        lsbMaxLengthDisplay.setText("Max Length: " + stegWorker.getMaxLengthForLSB() + " bits(characters)");
     }
 
     private ChoiceBox createChoiceBox() {
@@ -465,26 +465,27 @@ public class Interface extends Application {
         d0Display.setMaxWidth(60);
         d0Display.setLayoutX(230);
         d0Display.setLayoutY(360);
-        d0Display.setText(stegWorker.getZeroDelay());
+        Integer cur = stegWorker.getZeroDelay();
+        d0Display.setText(cur.toString());
 
         d0Display.textProperty().addListener((observable, oldValue, newValue) -> {
-            Integer i = Integer.parseInt(newValue);
-            stegWorker.setZeroDelay(i);
-            System.out.println("textfield changed from " + oldValue + " to " + newValue);
+            if (newValue != null) {
+                Integer i = Integer.parseInt(newValue);
+                stegWorker.setZeroDelay(i);
+            }
         });
 
         d1Display = new TextField();
         d1Display.setMaxWidth(60);
         d1Display.setLayoutX(300);
         d1Display.setLayoutY(360);
-        d1Display.setText(stegWorker.getOneDelay());
+        d1Display.setText(new Integer(stegWorker.getOneDelay()).toString());
 
         d1Display.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {}
-            Integer i = Integer.parseInt(newValue);
-            stegWorker.setOneDelay(i);
-            System.out.println("textfield changed from " + oldValue + " to " + newValue);
-        }
+            if (newValue != null) {
+                Integer i = Integer.parseInt(newValue);
+                stegWorker.setOneDelay(i);
+            }        
         });
     }
 }
