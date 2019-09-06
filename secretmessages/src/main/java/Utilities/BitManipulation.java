@@ -30,16 +30,6 @@ public class BitManipulation {
     }
 
     /**
-     *
-     * @param bytes
-     * @param chunkSize
-     * @return
-     */
-    public static int analyzeMaxNumberOfBytes(byte[] bytes, int chunkSize) {
-        return bytes.length / chunkSize;
-    }
-
-    /**
      * Inserts the given data bit to the final (rightmost, least significant)
      * bit of the target byte. The final bit of the target byte will be the data
      * bit.
@@ -79,8 +69,8 @@ public class BitManipulation {
     /**
      * Converts a single short to two bytes, ordered in little-endian fashion.
      *
-     * @param num
-     * @return
+     * @param num 16-bit number to convert to bytes
+     * @return two bytes in little-endian order
      */
     public static byte[] shortToLittleEndianBytes(short num) {
         byte[] res = new byte[2];

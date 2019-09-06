@@ -15,11 +15,15 @@ import static Utilities.BitManipulation.extractFinalBitFromByte;
 public class LSBEncoder {
 
     /**
-     *
-     * @param target
-     * @param message
-     * @param blockLength
-     * @return
+     * Encodes a byte array to target audio using Least-Significant Bit encoding.
+     * @param target The audio to encode the message to 
+     * @param message The message to hide as byte array.
+     * @param blockLength Length of each frame, i.e. all samples 
+     * 'for a single point in the audio signal. E.g. if there are 
+     * 2 channels, this value is 4 (2 * 2, where 2 is the number 
+     * of bytes per sample, the other 2 the number of samples per 
+     * frame),
+     * @return The steganographically modified audio as byte array
      */
 //    public static byte[] interleaveMessageInBytes(byte[] target, char[] message, int blockLength) {
     public static byte[] interleaveMessageInBytes(byte[] target, byte[] message, int blockLength) {
@@ -52,13 +56,12 @@ public class LSBEncoder {
 
     /**
      *
-     * @param source
-     * @param blockAlign
-     * @return
+     * @param source Source audio, 16-bit PCM data
+     * @param blockAlign Size of a single frame, i.e. if 2 channels, this equals 4.
+     * @return The hidden message a sbyte array
      */
     public static byte[] extractMessageFromBytes(byte[] source, int blockAlign) {
         byte[] message = new byte[(source.length / blockAlign) / 8];
-        System.out.println("message.length: " + message.length);
 
         for (int i = 0; i < message.length; i++) {
             message[i] = (byte) 0x00;

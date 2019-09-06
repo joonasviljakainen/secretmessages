@@ -15,7 +15,7 @@ public class Mathematics {
     /**
      * Returns the absolute value of the provided integer.
      *
-     * @param number
+     * @param number Integer whose absolute value is being solved
      * @return Absolute value of the parameter.
      */
     public static int abs(int number) {
@@ -27,7 +27,7 @@ public class Mathematics {
     
     /**
      * Returns the absolute value of a double.
-     * @param number
+     * @param number Number whose absolute value is being solved
      * @return Absolute value of the parameter.
      */
     public static double abs(double number) {
@@ -43,7 +43,7 @@ public class Mathematics {
      *
      * @param n The power to which two should be elevated.
      * @return The power of 2
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException Argument is our of bounds
      */
     public static byte powerOfTwo(int n) throws IllegalArgumentException {
         if (n < 0) {
@@ -62,6 +62,12 @@ public class Mathematics {
         return (byte) accum;
     }
 
+    /**
+     * Returns the nth power of the base.
+     * @param base Base number
+     * @param exponent n
+     * @return nth power of the exponent
+     */
     public static double pow(double base, int exponent) {
         double res = 1;
         for (int i = 0; i < exponent; i++) {

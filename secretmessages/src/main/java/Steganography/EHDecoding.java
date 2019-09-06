@@ -8,7 +8,6 @@ package Steganography;
 import org.jtransforms.fft.DoubleFFT_1D;
 import java.util.List;
 import java.util.ArrayList;
-//import static Math.NaturalLogarithm.ln;
 import static Math.Mathematics.abs;
 
 /**
@@ -21,17 +20,24 @@ public class EHDecoding {
     private static final int zeroDelay = 150;
     private static final int oneDelay = 300;
 
+    /**
+     * Decodes a message from audio that has been modified with echo hiding technique.
+     * A convenience method for using default parameters. Mostly used for
+     * testing.
+     * @param data The audio data to decode
+     * @return The decoded message as byte array
+     */
     public static byte[] decode(byte[] data) {
         return decode(data, zeroDelay, oneDelay, DEFAULT_FRAME_LENGTH);
     }
 
     /**
-     *
-     * @param data
-     * @param zeroDelay
-     * @param oneDelay
-     * @param segmentLength
-     * @return
+     * Decodes a message from audio that has been modified with echo hiding technique.
+     * @param data The audio from which to decode the message.
+     * @param zeroDelayAsFrames The anticipated delay for bit 0
+     * @param oneDelayAsFrames Anticipated delay for bit 1
+     * @param segmentLength Anticipated number of frames dedicated for each encoded bit
+     * @return The decoded message as byte array.
      */
     public static byte[] decode(byte[] data, int zeroDelayAsFrames, int oneDelayAsFrames, int segmentLength) {
 

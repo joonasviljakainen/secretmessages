@@ -114,22 +114,15 @@ public class BitUtilitiesTest {
         byte small3 = -127; // --> 129 in the unsigned world
         byte big3 = 50; // --> 12800 when shifted
         short s3 = littleEndianBytesToShort(small3, big3);
-        /*System.out.println(small3);
+        System.out.println(small3);
         System.out.println(Integer.toBinaryString(small3));
         System.out.println(big3);
         System.out.println(Integer.toBinaryString(big3));
         System.out.println(s3);
         System.out.println(Integer.toBinaryString(s3));
-        System.out.println((float)(s3));*/
+        System.out.println((float)(s3));
         assertEquals(s3, 12929);
         assertEquals(Integer.toBinaryString(s3), "11001010000001");
-    }
-
-    @Test
-    public void bytesToShortCompareEquallyToByteBuffer() {
-        //byte[] data = [8, 8, 4, 4];
-        
-        // TODO compare my solution for little-endian shorts with ByteBuffer
     }
     
     @Test

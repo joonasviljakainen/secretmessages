@@ -159,28 +159,5 @@ public class EHEncodingTest {
             }
         }
     }
-/*
-    @Test
-    public void mixerSignalCreatedProperly() {
-        byte[] mes = {105, 105}; // i, i
-        int messageContainerLength = 32;
-        int numFramesForBit = 2;
-        double[] mixer = EHEncoding.createMixerSignal(mes, messageContainerLength, numFramesForBit);
-        for (double d: mixer) {
-            System.out.println(d);
-        }
-        int counter = 0;
-        for (int i = 0; i < mes.length; i++) {
-        byte cur = mes[i];
-            for (int j = 0; j < 8; j++) {
-                int curBit = Utilities.BitManipulation.getNthBitFromByte(cur, j);
-                for (int a = 0; a < numFramesForBit; a++) {
-                    assertEquals((int)mixer[counter], curBit);
-                    i++;
-                }
-            }
-
-        }
-    }*/
 }
 

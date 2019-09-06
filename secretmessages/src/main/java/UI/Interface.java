@@ -311,7 +311,6 @@ public class Interface extends Application {
                     // TODO check message length
                     stegWorker.encode(messageEntryField.getText());
                 }
-                System.out.println("DONE!");
             }
         });
         return b;
@@ -326,7 +325,6 @@ public class Interface extends Application {
             public void handle(final ActionEvent e) {
                 decodedMessage = stegWorker.decode();
                 if (decodedMessage == null) {
-                    System.out.println("Voi hemmetti");
                     return;
                 }
                 char[] chars = new char[decodedMessage.length];
@@ -456,7 +454,6 @@ public class Interface extends Application {
                     try {
                     IOManager.writeBytesToFile(bytes, file.getName());
                     } catch (Exception e) {
-                        System.out.println("ERRIR");
                         System.out.println(e);
                     }
                 }

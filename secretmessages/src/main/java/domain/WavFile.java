@@ -70,7 +70,6 @@ public class WavFile {
 
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println("ERROR ERROR ");
         }
 
     }
@@ -110,7 +109,7 @@ public class WavFile {
      * Sets the audio data, i.e. data subchunk excluding subchunk id and
      * subchunk size.
      *
-     * @param data
+     * @param data The audio data to be set for the wav file.
      */
     public void setAudioData(byte[] data) {
         this.data = data;
@@ -272,6 +271,11 @@ public class WavFile {
         return channelBytes;
     }
 
+    /**
+     * Sets the audio data for a given channel. 0 = leftmost channel.
+     * @param num channel to select. Must be smaller than total number of channels.
+     * @param source the data to set to the channel. A byte array.
+     */
     public void setChannelByNumber(int num, byte[] source) {
         if (num > this.numChannels || num < 0) {
             throw new IllegalArgumentException("");
@@ -290,8 +294,18 @@ public class WavFile {
     }
 
     /**
-     *
-     * @return
+     * Returns a string containing a summary of the currently uploaded file:
+     * - Size as indicated in header
+     * - Size of the second subchunk (actual header) of the wav file
+     * - Audio format (integer)
+     * - Sample rate e.g. 44100
+     * - Byte rate 1. as given in header 2. as calculated from other data
+     * - Block align: the size of each complete frame (a frame consists of a set of samples for a single point in time)
+     * - Starting index for the data chunk of the wav file
+     * - size of the audio data as given in the header
+     * - Size of the audio data as calculated (i.e. excluding the header of the data subchunk)
+     * 
+     * @return the summary string.
      */
     public String getSummary() {
         String summary = "SIZE - in header: " + this.sizeInHeader

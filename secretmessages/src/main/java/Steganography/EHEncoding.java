@@ -16,12 +16,7 @@ import static Utilities.BitManipulation.shortArrayToLittleEndianBytes;
  */
 public class EHEncoding {
 
-    //private static final double zeroDelay = 150.0;
-    //private static final double oneDelay = 350.0;
-    //private static final int DEFAULT_FRAME_LENGTH = 8 * 512;
-    //private static final int DEFAULT_FRAME_LENGTH = 8 * 1024;  //--> Use this in real life
     private static final int DEFAULT_FRAME_LENGTH = 8 * 2048;
-    //private static final double DEFAULT_ECHO_AMPLITUDE = 0.7;
     private static final short SIGNAL_LIMIT_MAGNITUDE = 32760;
 
     /**
@@ -42,9 +37,10 @@ public class EHEncoding {
      * Encodes a watermark to an audio file using Echo Hiding technique.
      * @param data little-endian, single-channel byte data representing 16-bit PCM audio
      * @param message the message to hide. Must be 8-bit value.
-     * @param zeroDelayAsMs Length of the delay for bit zero
-     * @param oneDelayAsMs Length of the delay for bit one
+     * @param zeroDelay Length of the delay for bit zero
+     * @param oneDelay Length of the delay for bit one
      * @param decay The magnitude i.e. loudness of the echo used for hiding the data.
+     * @param segmentlength length of the segment dedicated to each bit
      * @return The steganographically encoded audio
      */
     public static byte[] encode(byte[] data, byte[] message, int zeroDelay, int oneDelay, double decay, int segmentlength) {
@@ -58,9 +54,11 @@ public class EHEncoding {
             throw new IllegalArgumentException("Message too long to hide!");
         }
 
+        // Create delayed signals
         short[] d0 = delaySignal(pcmData, zeroDelay);
         short[] d1 = delaySignal(pcmData, oneDelay);
 
+        // Create mixer signal and convolve
         double[] mixer = createMixerSignal(message, pcmData.length, segmentlength);
         short[] temp = convolveThreeSignals(pcmData, d0, d1, mixer, decay);
 
@@ -159,7 +157,7 @@ public class EHEncoding {
      * second.
      * @param decay Magnitude i.e. volume of the echo compared to the original.
      * 1.0 stands for equal volume. signal.
-     * @return
+     * @return array of shorts: The original audio with the added echo.
      */
     public static short[] delay(short[] data, int delayAsFrames, double decay) {
         short[] res = new short[data.length];
@@ -185,6 +183,13 @@ public class EHEncoding {
         return res;
     }
 
+    /**
+     * Takes a byte array of 16bit PCM data and adds an echo 
+     * to it, using default parameters. Mostly used for testing
+     * purposes.
+     * @param data The data to add the delay to.
+     * @return The byte array representing the audio with the added echo.
+     */
     public static byte[] simpleEcho(byte[] data) {
 
         // convert to shorts
