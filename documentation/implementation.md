@@ -1,6 +1,14 @@
 # Implementation document
 
-__NOTE__: I have NOT implemented Fourier transforms myself.
+I implemented two steganographic algorithms: Least-Significant Bit and Echo hiding. For both of these, data can be hidden and extracted.
+
+## Input data
+
+The project accepts WAV files with 16bit PCM audio. The source audio may have more than two channels, although I haven't tested it on surround sound data. 
+
+Most of my tests have been done on 44100Hz audio, but LSB doesn't care about sampling rates and I don't see any reason 8000Hz and 16000Hz would work with echo hiding - echoes are not handled in the time dimension, but rather with integer values representing the number of frames used as the delay.
+
+I have included three sample audio files in the root of the project for testing.
 
 ## Least-Significant Bit encoding
 
@@ -60,6 +68,8 @@ The project is a Maven project, consisting of the following classes:
 ## IO
 
 We need to load and save files. All of this functionality has been encapsulated in IOManager.java.
+
+Both loading and saving has been implemented.
 
 ## UI
 
