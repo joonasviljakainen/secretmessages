@@ -74,3 +74,10 @@ Both loading and saving has been implemented.
 ## UI
 
 There's a UI, but it's super crappy. Nonetheless, it works.
+
+# Features left out & suggestions for improvement
+
+- I implemented a decay rate variable for the echoes in echo hiding, but never plugged it in to the UI. That could prove some interesting results.
+- Mixer signal lerping: the echo hidden audio has clicks in it due to the changing echo. This could be alleviated by smoothening the mixer signal close to the borders of changing bits. 
+- Natural logarithms: could be replaced with own implementation 
+- Fourier transforms: Currently using an external library.

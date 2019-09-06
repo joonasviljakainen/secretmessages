@@ -28,10 +28,44 @@ This project will target Microsoft WAV files, as they are a simple starting poin
 
 ### Using the project
 
-To run the (super crappy) UI:
+
+I was unable to build the project properly (because why would I want to do that?), so you'll need to run it from source. 
+
+To run:
 
 1. clone the project
 2. navigate to the root directory with POM.xml and punch in `mvn javafx:run`
+
+If you have problems, try `mvn clean install && mvn javafx:run`.
+
+To use LSB:
+
+1. Click on "Least-Significant Bit"
+2. Click on "Select an audio file for encoding". You can navigate to the root of the repo and pick one of the files in the directory /samples.
+3. Write a message in the left-hand field
+4. Select channel from the tiny menu with no labe.
+5. Press "encode" to encode
+6. Save the file (this always saves in the current directory)
+7. Open the saved file
+8. Select the same channel you used previously for encoding
+9. Click "Decode".
+
+You should see the hidden message.
+
+To use Echo Hiding:
+
+(I hid something in the file 0728-encoded.wav. Block size is the longest possible, channel is 1.)
+
+1. Start app and go "To Echo Hiding
+2. Select file
+3. Select segment length in the unnamed field - e.g. 16384
+4. Write your message in the left-hand text area - remember to follow the max limit!
+5. Select channel, delay for bit 0 and delay for bit 1
+6. Click "Encode"
+
+Save the file if you want to and listen to it. Open it similarly to the instructions for LSB and punch in the same parameters you used for encoding.
+
+
 
 If you select the file `echoHidingRealFile.wav`, you'll see my super secred encoded message.
 
