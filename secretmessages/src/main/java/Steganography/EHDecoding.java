@@ -40,7 +40,6 @@ public class EHDecoding {
      * @return The decoded message as byte array.
      */
     public static byte[] decode(byte[] data, int zeroDelayAsFrames, int oneDelayAsFrames, int segmentLength) {
-
         short[] dataAsShorts = Utilities.BitManipulation.littleEndianByteArrayToShorts(data);
         List<short[]> segments = new ArrayList<>();
         int numberOfSegments = dataAsShorts.length/segmentLength;

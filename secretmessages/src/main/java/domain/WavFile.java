@@ -264,7 +264,8 @@ public class WavFile {
         int locationInTargetArray = 0;
         for (int i = startingIndex; i < this.data.length; i += this.blockAlign) {
             for (int l = 0; l < numOfBytesInSample && (i + l) < this.data.length && locationInTargetArray < channelBytes.length; l++) {
-                channelBytes[locationInTargetArray] = this.data[i + l];
+                byte d = this.data[i + l];
+                channelBytes[locationInTargetArray] = d;
                 locationInTargetArray++;
             }
         }
@@ -286,7 +287,9 @@ public class WavFile {
         //int startingIndex = (num) * numOfBytesInSample;
         int locationInSourceArray = 0;
         for (int i = startingIndex; i < this.data.length; i += this.blockAlign) {
-            for (int l = 0; l < numOfBytesInSample; l++) {
+            for (int l = 0; l < numOfBytesInSample 
+            && (i + l) < this.data.length 
+            && locationInSourceArray < source.length; l++) {
                 this.data[i + l] = source[locationInSourceArray];
                 locationInSourceArray++;
             }

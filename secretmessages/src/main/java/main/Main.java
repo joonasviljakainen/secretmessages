@@ -9,47 +9,11 @@ import Steganography.EHEncoding;
 import static Steganography.EHEncoding.simpleEcho;
 import java.io.IOException;
 import Steganography.LSBEncoder;
-//import Math.NaturalLogarithm;
 
 public class Main {
 
     public static void main(String[] args) {
-        //NaturalLogarithm n = new NaturalLogarithm();
-
-
         try {
-
-            /*
-            WavFile big = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
-            char[] test = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-            byte[] message = new byte[test.length];
-            for (int i = 0; i < test.length; i++) {
-                message[i] = (byte) test[i];
-            }
-
-            Long lo = System.currentTimeMillis();
-            byte[] bigTestEncoded = LSBEncoder.interleaveMessageInBytes(big.getAudioData(), message, 4);
-            System.out.println("LSB Encoded message in " + (System.currentTimeMillis() - lo) + "ms");
-
-            big.setAudioData(bigTestEncoded);
-            byte[] mes = LSBEncoder.extractMessageFromBytes(bigTestEncoded, 4);
-
-            IOManager.writeBytesToFile(big.toSaveableByteArray(), "encoded-test-44kHz.wav");
-            WavFile toDecode = new WavFile(IOManager.readFileToBytes("encoded-test-44kHz.wav"));
-
-
-            Long l = System.currentTimeMillis();
-            byte[] extractedMessage = LSBEncoder.extractMessageFromBytes(toDecode.getAudioData(), 4);
-            System.out.println("extracting BIG took " + (System.currentTimeMillis() - l) + "ms");
-
-
-            char[] test2 ="HIPSTERIBRUNSSI ON MAHTAVAAAA".toCharArray();
-            //char[] test2 = "TOOT TOOT TOOTSIE TOOTSIE".toCharArray();
-            */
-
-
-            // ECHO HIDING
-            // ___________
            
             WavFile toDelay = new WavFile(IOManager.readFileToBytes("../samples/44kHz.wav"));
             byte[] s = simpleEcho(toDelay.getChannelByNumber(1));

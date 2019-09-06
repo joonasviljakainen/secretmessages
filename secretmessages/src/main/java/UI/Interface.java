@@ -200,7 +200,6 @@ public class Interface extends Application {
             for (int i = 0; i < stegWorker.getNumberOfChannels(); i++) {
                 choices.add(i);
             }
-            // cb1 = createChoiceBox("Select channel");
             ObservableList o = FXCollections.observableArrayList(choices);
             cb1.setItems(o);
             cb2.setItems(o);

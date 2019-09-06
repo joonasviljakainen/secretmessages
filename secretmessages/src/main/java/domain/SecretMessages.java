@@ -47,6 +47,7 @@ public class SecretMessages {
         try {
             wavFile = new domain.WavFile(IO.IOManager.readFileToBytes(path));
             fileName = name;
+            this.channelNum = 1;
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -215,6 +216,7 @@ public class SecretMessages {
      * @param channelNum Number of the channel. 0 for left-most channel.
      */
     public void setChannel(int channelNum) {
+        if (channelNum < 0) channelNum = 1;
         this.channelNum = channelNum + 1;
     }
 
@@ -245,6 +247,7 @@ public class SecretMessages {
         segmentLength = DEFAULT_SEGMENT_LENGTH;
         zeroDelay = DEFAULT_ZERO_DELAY;
         oneDelay = DEFAULT_ONE_DELAY;
+        channelNum = 1;
     }
 
     /**
