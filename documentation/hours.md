@@ -79,7 +79,7 @@ Subtotal for 5 weeks: 59h
 
 [Weekly report #6](/documentation/report6.md)
 
-| Date | Time spent | Description|
+| Date | Time spent | Description |
 |-|-|-|
 | 25.8.2019 | 1,5h | UI work |
 | 27.8.2019 | 3h | UI: plugging things in |
@@ -90,3 +90,13 @@ Subtotal for 5 weeks: 59h
 Subtotal for 5 weeks: 66h
 
 ## Week 7
+
+Totally ran out of time, but it'll 
+
+| Date | Time spent | Description |
+|-|-|-|
+| 2.9.2019 | 2h | Discarded logarithm work. Preparing for the demo |
+| 6.9.2019 | 4h | UI work, documentation, crunch time! |
+| __Total__ | 6h ||
+
+Total for the project: 72h

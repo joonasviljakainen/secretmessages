@@ -4,9 +4,13 @@ __NOTE__: I have NOT implemented Fourier transforms myself.
 
 ## Least-Significant Bit encoding
 
-Least-significant bit encoding has been implemented in such a way that at the moment data can be hidden in one channel (left by default).
+Least-significant bit encoding has been implemented in such a way that at the moment data can be hidden in one channel (left by default). Peachy stuff.
 
 ## Echo Hiding
+
+Echo hiding requires stuff like creating delays, convolving signals. Analysis involves fourier transforms and natural logarithms. 
+- I have __not__ implemented fourier transforms. I use [JTransforms](https://sites.google.com/site/piotrwendykier/software/jtransforms) instead.
+- I made attempts at a natural logarithm function, but decoding times rose up to 30 seconds or more (form 400-1000 milliseconds), so I abandoned that idea.
 
 ### Encoding
 
@@ -44,13 +48,13 @@ The project is a Maven project, consisting of the following classes:
 1. __SecretMessages.java__: An entry point class that brings together the features of all other classes, so as to provide them to the UI.
 2. __WavFile.java__: A class representing a WAV file. Provides methods for accessing and manipulating the data of the WAV file, as well as for opening and reading WAV files using the IOManager class.
 3. __IOManager.java__: A helper class for reading and writing files as byte arrays.
-4. __Main.java__(Deprecated): the main class.
-5. __Mathematics.java__: Mathematical functions.
+4. __Main.java__(Deprecated): the main class. Only used for testing.
+5. __Mathematics.java__: Mathematical functions (absolute values, power of 2, exponential functions)
 6. __EHEncoding.java__: Methods for hiding messages using Echo Hiding.
 7. __EHDecoding.java__: Methods for extracting messages from WAV files that have been encoded using Echo Hiding.
 8. __LSBEncoder.java__: Methods for hiding and extracting messages from WAV files using Least-Significant Bit encoding.
 9: __Interface.java__: The UI of the application.
-10: __ArrayUtils.java__: Utilities for manipulating byte arrays.
+10: __ArrayUtils.java__: Utilities for manipulating byte arrays: (slicing, combining)
 11: __BitManipulation.java__: Utilities for bit operations and byte to short conversions (and reverse).
 
 ## IO
@@ -59,4 +63,4 @@ We need to load and save files. All of this functionality has been encapsulated 
 
 ## UI
 
-There's a UI, but it's still WIP.
+There's a UI, but it's super crappy. Nonetheless, it works.
